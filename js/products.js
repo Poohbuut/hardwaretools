@@ -1,24 +1,24 @@
-// Compatibility shim for older products.html buttons
+// products.js — add-to-cart popup + price calculator for products.html
 function addToCart(name, price) {
-  const n = document.getElementById('cart-popup-name');
-  const d = document.getElementById('cart-popup-desc');
-  if (n) n.textContent = name;
-  if (d) d.textContent = `Price: ${price}`;
+  const nameEl = document.getElementById('cart-popup-name');
+  const descEl = document.getElementById('cart-popup-desc');
+  if (nameEl) nameEl.textContent = name;
+  if (descEl) descEl.textContent = 'Price: ' + price + ' — has been added to your cart.';
   openPopup('cart-popup');
 }
 
-// Calculator used on products.html (legacy IDs q1..q6)
+// Calculator: legacy IDs q1..q6
+const PRICES = [149, 89, 124, 72, 210, 195];
+
 function calcTotal() {
-  const prices = [149,89,124,72,210,195];
   let total = 0;
-  for (let i=1;i<=6;i++) {
-    const val = parseInt(document.getElementById('q'+i)?.value) || 0;
-    total += val * prices[i-1];
+  for (let i = 1; i <= 6; i++) {
+    const val = parseInt(document.getElementById('q' + i)?.value) || 0;
+    total += val * PRICES[i - 1];
   }
   const el = document.getElementById('calc-result');
   if (el) el.textContent = '$' + total.toLocaleString();
 }
 
-// expose for consoles
 window.addToCart = addToCart;
 window.calcTotal = calcTotal;

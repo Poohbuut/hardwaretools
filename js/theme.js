@@ -1,16 +1,23 @@
-// Lightweight theme toggle compatible with older pages
+// theme.js — dark/light toggle, works on all pages
 function toggleTheme() {
   const isDark = document.body.classList.toggle('dark');
-  const btn = document.getElementById('themeBtn') || document.getElementById('theme-toggle') || document.querySelector('.theme-btn') || document.querySelector('#theme-toggle');
-  if (btn) btn.textContent = isDark ? 'Light' : 'Dark';
+  const label = isDark ? 'Light' : 'Dark';
+  // support multiple possible button IDs/classes
+  ['themeBtn','theme-toggle'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = label;
+  });
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
 
-// restore on load
 document.addEventListener('DOMContentLoaded', () => {
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark');
-    const btn = document.getElementById('themeBtn') || document.getElementById('theme-toggle') || document.querySelector('.theme-btn');
-    if (btn) btn.textContent = 'Light';
+    ['themeBtn','theme-toggle'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = 'Light';
+    });
   }
 });
+
+window.toggleTheme = toggleTheme;

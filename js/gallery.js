@@ -1,42 +1,28 @@
-// ─────────────────────────────────────────────
-//  gallery.js — Slideshow, thumbnails, auto-play
-// ─────────────────────────────────────────────
-
+// gallery.js — slideshow, thumbnails, auto-play
 let currentSlide = 0;
+let autoTimer    = null;
 
 function buildGallery() {
   const ss = document.getElementById('slideshow');
   const tb = document.getElementById('thumbs');
+  if (!ss || !tb) return;
 
-  PRODUCTS.forEach((p, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'slide' + (i === 0 ? ' active' : '');
-    slide.style.color = 'var(--text)';
-    slide.innerHTML = `
-      <div class="slide-svg">${p.svg}</div>
-      <div class="slide-caption">${p.name} — $${p.price}</div>
-    `;
-    ss.appendChild(slide);
-
-    const thumb = document.createElement('div');
-    thumb.className = 'thumb' + (i === 0 ? ' active' : '');
-    thumb.style.color = 'var(--text)';
-    thumb.innerHTML = p.svg;
-    thumb.addEventListener('click', () => goToSlide(i));
-    tb.appendChild(thumb);
-  });
-
+  // gallery.html uses static HTML slides/thumbs — just wire up the counter
   updateCounter();
 }
 
 function goToSlide(n) {
   const slides = document.querySelectorAll('.slide');
   const thumbs = document.querySelectorAll('.thumb');
+  if (!slides.length) return;
+
   slides[currentSlide].classList.remove('active');
-  thumbs[currentSlide].classList.remove('active');
-  currentSlide = (n + slides.length) % slides.length;
+  if (thumbs[currentSlide]) thumbs[currentSlide].classList.remove('active');
+
+  currentSlide = ((n % slides.length) + slides.length) % slides.length;
+
   slides[currentSlide].classList.add('active');
-  thumbs[currentSlide].classList.add('active');
+  if (thumbs[currentSlide]) thumbs[currentSlide].classList.add('active');
   updateCounter();
 }
 
@@ -46,13 +32,26 @@ function changeSlide(dir) {
 
 function updateCounter() {
   const total = document.querySelectorAll('.slide').length;
-  document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + total;
+  const el    = document.getElementById('slideCounter');
+  if (el) el.textContent = (currentSlide + 1) + ' / ' + total;
 }
 
-// Hero cycles through product illustrations
+function toggleAuto() {
+  const btn = document.getElementById('auto-btn');
+  if (autoTimer) {
+    clearInterval(autoTimer);
+    autoTimer = null;
+    if (btn) btn.textContent = 'Auto-play: Off';
+  } else {
+    autoTimer = setInterval(() => changeSlide(1), 3000);
+    if (btn) btn.textContent = 'Auto-play: On';
+  }
+}
+
+// Hero animation (used by pages that have #heroDisplay)
 function buildHero() {
   const display = document.getElementById('heroDisplay');
-  if (!display) return;
+  if (!display || typeof PRODUCTS === 'undefined') return;
   display.style.cssText = 'width:65%; height:65%; color:var(--text); transition:opacity .6s;';
   let heroIdx = 0;
   display.innerHTML = PRODUCTS[0].svg;
@@ -65,3 +64,7 @@ function buildHero() {
     }, 600);
   }, 2500);
 }
+
+window.goToSlide   = goToSlide;
+window.changeSlide = changeSlide;
+window.toggleAuto  = toggleAuto;
