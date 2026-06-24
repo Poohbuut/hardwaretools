@@ -395,9 +395,9 @@
 <nav>
   <span class="nav-logo">Hardware Tools</span>
   <div class="nav-right">
-    <button class="nav-link" onclick="scrollTo('#products')">Products</button>
-    <button class="nav-link" onclick="scrollTo('#gallery')">Gallery</button>
-    <button class="nav-link" onclick="scrollTo('#calculator')">Order</button>
+    <button class="nav-link" onclick="scrollToSection('#products')">Products</button>
+    <button class="nav-link" onclick="scrollToSection('#gallery')">Gallery</button>
+    <button class="nav-link" onclick="scrollToSection('#calculator')">Order</button>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Dark</button>
     <button class="cart-btn" onclick="openCart()">
       Cart <span class="cart-count" id="cartBadge">0</span>
@@ -411,8 +411,8 @@
     <span class="tag">Premium Hand Tools — Precision Engineering</span>
     <h1>Tools Built<br>for Precision.</h1>
     <p>Engineered for architects, craftsmen, and makers who demand the very best. No compromise. Just pure function.</p>
-    <button class="btn btn-dark" onclick="scrollTo('#products')" style="margin-right:12px;">Shop Now</button>
-    <button class="btn btn-outline" onclick="scrollTo('#gallery')">View Gallery</button>
+    <button class="btn btn-dark" onclick="scrollToSection('#products')" style="margin-right:12px;">Shop Now</button>
+    <button class="btn btn-outline" onclick="scrollToSection('#gallery')">View Gallery</button>
   </div>
   <div class="hero-visual">
     <!-- Animated hero: cycles through product SVGs -->
@@ -850,8 +850,14 @@ function toggleTheme() {
 
 // ─────────────────────────────────────────────
 //  SMOOTH SCROLL
+//  NOTE: renamed from "scrollTo" to "scrollToSection" because "scrollTo"
+//  collides with the native window.scrollTo() method. Declaring a global
+//  function named scrollTo is unreliable across browsers for overriding
+//  the native method, which is exactly why every button that called
+//  scrollTo('#...') (Products / Gallery / Order nav links, Shop Now,
+//  View Gallery) was silently failing while Dark/Light and Cart worked.
 // ─────────────────────────────────────────────
-function scrollTo(selector) {
+function scrollToSection(selector) {
   document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
 }
 
