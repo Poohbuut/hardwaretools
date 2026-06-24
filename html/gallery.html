@@ -11,13 +11,13 @@
   <!-- ── Navigation ──────────────────────────────────────────────────────── -->
   <nav>
     <span class="nav-logo">Hardware Tools</span>
-    <ul class="nav-links">
-      <li><a class="nav-link" href="index.html">Home</a></li>
-      <li><a class="nav-link" href="products.html">Products</a></li>
-      <li><a class="nav-link active" href="gallery.html">Gallery</a></li>
-      <li><a class="nav-link" href="contact.html">Contact</a></li>
-      <li><button id="themeBtn" onclick="toggleTheme()">Dark</button></li>
-    </ul>
+    <div class="nav-right">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="products.html">Products</a>
+      <a class="nav-link active" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Dark</button>
+    </div>
   </nav>
 
   <!-- ── Page header ─────────────────────────────────────────────────────── -->
@@ -84,7 +84,7 @@
     </div>
 
     <!-- Thumbnail strip — goToSlide(n) jumps to the matching slide -->
-    <div id="thumbs" class="gallery-thumbs" style="margin-top: 32px;">
+    <div id="thumbs" class="thumbs" style="margin-top: 32px;">
       <div class="thumb active" onclick="goToSlide(0)">
         <img src="../images/product-dovetail-saw.svg"   alt="Dovetail Saw"        style="width:100%; height:100%; object-fit:cover;">
       </div>
