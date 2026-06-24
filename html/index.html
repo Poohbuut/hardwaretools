@@ -4,22 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hardware Tools</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- Styles live one level up in css/ -->
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-  <!-- Welcome Popup (JS Feature 1) -->
+  <!-- ── Welcome Popup ──────────────────────────────────────────────────────
+       Shows on first visit. Closed by the × button or "Explore" CTA.
+       Uses openPopup / closePopup from js/popup.js.
+  ─────────────────────────────────────────────────────────────────────────── -->
   <div class="popup-overlay visible" id="welcome-popup">
     <div class="popup">
       <button class="popup-close" onclick="closePopup('welcome-popup')" aria-label="Close">&times;</button>
       <span class="tag">Est. 2026</span>
       <h3>Welcome to Hardware Tools</h3>
       <p>Premium architectural and industrial hand tools. Engineered for precision. Built to last.</p>
+      <!-- href points to sibling HTML file inside html/ -->
       <a href="products.html" class="btn btn-dark" onclick="closePopup('welcome-popup')">Explore the Collection</a>
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- ── Navigation ──────────────────────────────────────────────────────── -->
   <nav>
     <span class="nav-logo">Hardware Tools</span>
     <ul class="nav-links">
@@ -27,11 +32,12 @@
       <li><a href="products.html">Products</a></li>
       <li><a href="gallery.html">Gallery</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <!-- toggleTheme() is defined in js/theme.js -->
       <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
     </ul>
   </nav>
 
-  <!-- Hero -->
+  <!-- ── Hero ────────────────────────────────────────────────────────────── -->
   <section class="hero">
     <span class="tag">Premium Hand Tools &mdash; Precision Engineering</span>
     <h1>Tools Built<br>for Precision.</h1>
@@ -41,7 +47,7 @@
     <a href="gallery.html" class="btn btn-outline">View Gallery</a>
   </section>
 
-  <!-- Stats -->
+  <!-- ── Stats strip ─────────────────────────────────────────────────────── -->
   <div class="stats-row">
     <div class="stat-cell">
       <div class="stat-number">16+</div>
@@ -57,42 +63,58 @@
     </div>
   </div>
 
-  <!-- Featured Products -->
+  <!-- ── Featured Products ────────────────────────────────────────────────── -->
   <section class="section section-border">
     <span class="tag">Featured Products</span>
     <h2 style="margin-bottom: 48px;">The Essentials</h2>
+
     <div class="product-grid">
+
       <div class="product-card">
-        <div class="product-img">🪚</div>
+        <!-- Placeholder SVG; swap src for a real photo when available -->
+        <div class="product-img">
+          <img src="../images/product-dovetail-saw.svg" alt="Dovetail Saw">
+        </div>
         <div class="product-name">Dovetail Saw</div>
         <div class="product-desc">Japanese pull-cut, 20 TPI razor spine</div>
         <div class="product-price">$149</div>
       </div>
+
       <div class="product-card">
-        <div class="product-img">📐</div>
+        <div class="product-img">
+          <img src="../images/product-layout-square.svg" alt="Layout Square">
+        </div>
         <div class="product-name">Layout Square</div>
         <div class="product-desc">Precision machined stainless, 300mm</div>
         <div class="product-price">$89</div>
       </div>
+
       <div class="product-card">
-        <div class="product-img">🔨</div>
+        <div class="product-img">
+          <img src="../images/product-joiners-mallet.svg" alt="Joiner's Mallet">
+        </div>
         <div class="product-name">Joiner's Mallet</div>
         <div class="product-desc">Solid beech, brass-ringed handle</div>
         <div class="product-price">$124</div>
       </div>
+
       <div class="product-card">
-        <div class="product-img">🪛</div>
+        <div class="product-img">
+          <img src="../images/product-driver-set.svg" alt="Precision Driver Set">
+        </div>
         <div class="product-name">Precision Driver Set</div>
         <div class="product-desc">8-piece, hardened steel tips</div>
         <div class="product-price">$210</div>
       </div>
+
     </div>
+
     <div style="margin-top: 40px;">
       <a href="products.html" class="btn btn-outline">View All Products</a>
     </div>
   </section>
 
-  <!-- About Blurb -->
+  <!-- ── About blurb ──────────────────────────────────────────────────────── -->
   <section class="section section-border">
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
       <div>
@@ -108,37 +130,27 @@
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- ── CTA strip ───────────────────────────────────────────────────────── -->
   <section class="section-sm section-border text-center">
     <span class="tag">Ready to get started?</span>
     <h2 style="margin-bottom: 24px;">Build Something Lasting.</h2>
     <a href="contact.html" class="btn btn-dark">Get in Touch</a>
   </section>
 
-  <!-- Footer -->
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
   <footer>
     <span class="footer-logo">Hardware Tools</span>
     <span class="footer-text">&copy; 2024 Hardware Tools. All rights reserved.</span>
   </footer>
 
-  <script>
-    function closePopup(id) {
-      document.getElementById(id).classList.remove('visible');
-    }
+  <!-- ── Scripts ─────────────────────────────────────────────────────────────
+       Load order matters:
+         1. popup.js  — defines openPopup / closePopup (used by theme toggle too)
+         2. theme.js  — applies stored theme and defines toggleTheme()
+       No page-specific JS needed on the home page.
+  ─────────────────────────────────────────────────────────────────────────── -->
+  <script src="../js/popup.js"></script>
+  <script src="../js/theme.js"></script>
 
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
-      const btn = document.getElementById('theme-toggle');
-      btn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
-      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    }
-
-    (function() {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
-        document.getElementById('theme-toggle').textContent = 'Light';
-      }
-    })();
-  </script>
 </body>
 </html>

@@ -4,11 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Hardware Tools</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-  <!-- Success Popup -->
+  <!-- ── Success Popup ───────────────────────────────────────────────────────
+       Shown by submitForm() in js/contact.js after all fields pass validation.
+       Closed by the × button or the "Close" CTA via closePopup() in js/popup.js.
+  ─────────────────────────────────────────────────────────────────────────── -->
   <div class="popup-overlay" id="success-popup">
     <div class="popup">
       <button class="popup-close" onclick="closePopup('success-popup')" aria-label="Close">&times;</button>
@@ -19,7 +22,7 @@
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- ── Navigation ──────────────────────────────────────────────────────── -->
   <nav>
     <span class="nav-logo">Hardware Tools</span>
     <ul class="nav-links">
@@ -31,18 +34,18 @@
     </ul>
   </nav>
 
-  <!-- Header -->
+  <!-- ── Page header ─────────────────────────────────────────────────────── -->
   <section class="hero" style="padding-bottom: 60px;">
     <span class="tag">Get in Touch</span>
     <h1>Contact Us</h1>
     <p>Questions about our products, bulk orders, or custom enquiries? We respond to every message within two business days.</p>
   </section>
 
-  <!-- Contact Section -->
+  <!-- ── Contact section ─────────────────────────────────────────────────── -->
   <section class="section section-border">
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;">
 
-      <!-- Info Column -->
+      <!-- Info column -->
       <div>
         <span class="tag">Details</span>
         <h2 style="margin-bottom: 40px;">We'd Like<br>to Hear<br>From You.</h2>
@@ -68,11 +71,16 @@
         </div>
       </div>
 
-      <!-- Form Column (JS Feature 4: Form Validation) -->
+      <!-- ── Contact form ─────────────────────────────────────────────────────
+           Submission is handled by submitForm() in js/contact.js.
+           novalidate turns off native browser validation so our custom
+           error messages show instead.
+      ──────────────────────────────────────────────────────────────────────── -->
       <div>
         <span class="tag">Send a Message</span>
 
         <form id="contact-form" novalidate onsubmit="submitForm(event)">
+
           <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" placeholder="Your name" autocomplete="name">
@@ -100,10 +108,11 @@
           <button type="submit" class="btn btn-dark" style="width: 100%;">Send Message</button>
         </form>
       </div>
+
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- ── FAQ ─────────────────────────────────────────────────────────────── -->
   <section class="section section-border">
     <span class="tag">Common Questions</span>
     <h2 style="margin-bottom: 48px;">FAQ</h2>
@@ -127,56 +136,21 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
   <footer>
     <span class="footer-logo">Hardware Tools</span>
     <span class="footer-text">&copy; 2024 Hardware Tools. All rights reserved.</span>
   </footer>
 
-  <script>
-    function validate(id, condition, errorId) {
-      const el = document.getElementById(id);
-      const err = document.getElementById(errorId);
-      if (!condition(el.value)) {
-        el.classList.add('error');
-        err.classList.add('visible');
-        return false;
-      }
-      el.classList.remove('error');
-      err.classList.remove('visible');
-      return true;
-    }
+  <!-- ── Scripts ─────────────────────────────────────────────────────────────
+       Load order:
+         1. popup.js   — openPopup / closePopup (used by success-popup)
+         2. theme.js   — dark/light mode
+         3. contact.js — validate(), submitForm(), live re-validation listeners
+  ─────────────────────────────────────────────────────────────────────────── -->
+  <script src="../js/popup.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/contact.js"></script>
 
-    function submitForm(e) {
-      e.preventDefault();
-      const v1 = validate('name',    v => v.trim().length >= 2,                      'name-error');
-      const v2 = validate('email',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),     'email-error');
-      const v3 = validate('subject', v => v.trim().length >= 3,                      'subject-error');
-      const v4 = validate('message', v => v.trim().length >= 20,                     'message-error');
-
-      if (v1 && v2 && v3 && v4) {
-        document.getElementById('contact-form').reset();
-        document.getElementById('success-popup').classList.add('visible');
-      }
-    }
-
-    function closePopup(id) {
-      document.getElementById(id).classList.remove('visible');
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
-      const btn = document.getElementById('theme-toggle');
-      btn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
-      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    }
-
-    (function() {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
-        document.getElementById('theme-toggle').textContent = 'Light';
-      }
-    })();
-  </script>
 </body>
 </html>

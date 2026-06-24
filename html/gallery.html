@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Hardware Tools</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────────────────────────── -->
+  <nav>
+    <span class="nav-logo">Hardware Tools</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page header ─────────────────────────────────────────────────────── -->
+  <section class="hero" style="padding-bottom: 60px;">
+    <span class="tag">Visual Catalogue</span>
+    <h1>Gallery</h1>
+    <p>A close look at the tools in our collection. Details, materials, and craftsmanship that speak for themselves.</p>
+  </section>
+
+  <!-- ── Slideshow ───────────────────────────────────────────────────────────
+       Controlled by js/gallery.js:
+         changeSlide(dir)  — prev / next buttons
+         goToSlide(n)      — thumbnail clicks and grid clicks
+         toggleAuto()      — auto-play toggle button
+       The first .slide has class "active" to set the initial visible state.
+  ─────────────────────────────────────────────────────────────────────────── -->
+  <section class="section-sm section-border">
+    <span class="tag">Slideshow</span>
+
+    <div class="slideshow" id="slideshow">
+
+      <div class="slide active">
+        <img src="../images/product-dovetail-saw.svg" alt="Dovetail Saw" style="max-height: 260px; object-fit: contain;">
+        <div class="slide-caption">Dovetail Saw — Japanese pull-cut, 20 TPI</div>
+      </div>
+
+      <div class="slide">
+        <img src="../images/product-layout-square.svg" alt="Layout Square" style="max-height: 260px; object-fit: contain;">
+        <div class="slide-caption">Layout Square — Precision machined stainless steel</div>
+      </div>
+
+      <div class="slide">
+        <img src="../images/product-joiners-mallet.svg" alt="Joiner's Mallet" style="max-height: 260px; object-fit: contain;">
+        <div class="slide-caption">Joiner's Mallet — Solid European beech</div>
+      </div>
+
+      <div class="slide">
+        <img src="../images/product-marking-gauge.svg" alt="Marking Gauge" style="max-height: 260px; object-fit: contain;">
+        <div class="slide-caption">Marking Gauge — Wheel cutter, rosewood fence</div>
+      </div>
+
+      <div class="slide">
+        <img src="../images/product-driver-set.svg" alt="Precision Driver Set" style="max-height: 260px; object-fit: contain;">
+        <div class="slide-caption">Precision Driver Set — 8-piece, hardened S2 steel</div>
+      </div>
+
+      <div class="slide">
+        <img src="../images/product-chisel-set.svg" alt="Bench Chisel Set" style="max-height: 260px; object-fit: contain;">
+        <div class="slide-caption">Bench Chisel Set — A2 steel, honed to 25°</div>
+      </div>
+
+    </div>
+
+    <!-- Prev / Next controls -->
+    <div class="slide-controls">
+      <button class="slide-btn" onclick="changeSlide(-1)">← Previous</button>
+      <span class="slide-counter" id="slide-counter">1 / 6</span>
+      <button class="slide-btn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <!-- Auto-play toggle -->
+    <div style="margin-top: 8px; text-align: right;">
+      <button class="slide-btn" id="auto-btn" onclick="toggleAuto()">Auto-play: Off</button>
+    </div>
+
+    <!-- Thumbnail strip — goToSlide(n) jumps to the matching slide -->
+    <div class="gallery-thumbs" style="margin-top: 32px;">
+      <div class="thumb active" onclick="goToSlide(0)">
+        <img src="../images/product-dovetail-saw.svg"   alt="Dovetail Saw"        style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="thumb" onclick="goToSlide(1)">
+        <img src="../images/product-layout-square.svg"  alt="Layout Square"       style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="thumb" onclick="goToSlide(2)">
+        <img src="../images/product-joiners-mallet.svg" alt="Joiner's Mallet"     style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="thumb" onclick="goToSlide(3)">
+        <img src="../images/product-marking-gauge.svg"  alt="Marking Gauge"       style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="thumb" onclick="goToSlide(4)">
+        <img src="../images/product-driver-set.svg"     alt="Precision Driver Set" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="thumb" onclick="goToSlide(5)">
+        <img src="../images/product-chisel-set.svg"     alt="Bench Chisel Set"    style="width:100%; height:100%; object-fit:cover;">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Full-collection grid ────────────────────────────────────────────── -->
+  <!-- Each cell calls goToSlide(n) and scrolls the slideshow into view -->
+  <section class="section section-border">
+    <span class="tag">Full Collection</span>
+    <h2 style="margin-bottom: 40px;">Every Detail Counts</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+
+      <div class="product-img" style="cursor:pointer;"
+           onclick="goToSlide(0); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">
+        <img src="../images/product-dovetail-saw.svg"   alt="Dovetail Saw">
+      </div>
+      <div class="product-img" style="cursor:pointer;"
+           onclick="goToSlide(1); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">
+        <img src="../images/product-layout-square.svg"  alt="Layout Square">
+      </div>
+      <div class="product-img" style="cursor:pointer;"
+           onclick="goToSlide(2); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">
+        <img src="../images/product-joiners-mallet.svg" alt="Joiner's Mallet">
+      </div>
+      <div class="product-img" style="cursor:pointer;"
+           onclick="goToSlide(3); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">
+        <img src="../images/product-marking-gauge.svg"  alt="Marking Gauge">
+      </div>
+      <div class="product-img" style="cursor:pointer;"
+           onclick="goToSlide(4); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">
+        <img src="../images/product-driver-set.svg"     alt="Precision Driver Set">
+      </div>
+      <div class="product-img" style="cursor:pointer;"
+           onclick="goToSlide(5); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">
+        <img src="../images/product-chisel-set.svg"     alt="Bench Chisel Set">
+      </div>
+
+    </div>
+
+    <p style="margin-top: 16px; font-size: 11px; color: var(--text-muted);">Click any item to view it in the slideshow above.</p>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-logo">Hardware Tools</span>
+    <span class="footer-text">&copy; 2024 Hardware Tools. All rights reserved.</span>
+  </footer>
+
+  <!-- ── Scripts ─────────────────────────────────────────────────────────────
+       Load order:
+         1. popup.js   — shared modal helpers (no popups on this page, but
+                         included for consistency if modals are added later)
+         2. theme.js   — dark/light mode
+         3. gallery.js — slideshow: showSlide, changeSlide, goToSlide, toggleAuto
+  ─────────────────────────────────────────────────────────────────────────── -->
+  <script src="../js/popup.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/gallery.js"></script>
+
+</body>
+</html>
