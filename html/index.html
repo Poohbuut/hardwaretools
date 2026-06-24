@@ -3,154 +3,872 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hardware Tools</title>
-  <!-- Styles live one level up in css/ -->
-  <link rel="stylesheet" href="../css/style.css">
+  <title>Hardware Tools — Premium Hand Tools</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f5f3;
+      --text: #111111;
+      --text-muted: #777777;
+      --border: #111111;
+      --border-soft: #e2e2e0;
+      --accent: #c8602a;
+    }
+
+    body.dark {
+      --bg: #111111;
+      --bg-soft: #1c1c1c;
+      --text: #f0efe9;
+      --text-muted: #888888;
+      --border: #f0efe9;
+      --border-soft: #2a2a2a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.7;
+      transition: background .3s, color .3s;
+    }
+
+    a { color: var(--text); text-decoration: none; }
+    p { color: var(--text-muted); }
+    h1, h2, h3 { font-weight: 400; line-height: 1.1; letter-spacing: -.02em; }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      border-bottom: 1px solid var(--border-soft);
+      position: sticky; top: 0;
+      background: var(--bg);
+      z-index: 200;
+    }
+    .nav-logo { font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-link { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); cursor: pointer; transition: color .2s; border: none; background: none; font-family: inherit; }
+    .nav-link:hover, .nav-link.active { color: var(--text); }
+    .cart-btn {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+      background: var(--text); color: var(--bg);
+      border: none; padding: 8px 18px; cursor: pointer;
+      font-family: inherit; transition: opacity .2s;
+    }
+    .cart-btn:hover { opacity: .8; }
+    .cart-count {
+      background: var(--accent); color: #fff;
+      border-radius: 50%; width: 18px; height: 18px;
+      font-size: 10px; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; display: none;
+    }
+    .cart-count.show { display: flex; }
+    .theme-btn {
+      background: none; border: 1px solid var(--border-soft);
+      color: var(--text-muted); padding: 6px 12px;
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit; transition: all .2s;
+    }
+    .theme-btn:hover { background: var(--text); color: var(--bg); border-color: var(--border); }
+
+    /* ── SECTIONS ── */
+    .section { padding: 80px 48px; }
+    .section-sm { padding: 48px 48px; }
+    .section + .section, .section + .section-sm, .section-sm + .section { border-top: 1px solid var(--border-soft); }
+    .tag { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; display: block; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 100px 48px 80px;
+      border-bottom: 1px solid var(--border-soft);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .hero-text h1 { margin-bottom: 20px; }
+    .hero-text p { max-width: 380px; margin-bottom: 36px; font-size: 15px; }
+    .hero-visual {
+      aspect-ratio: 1;
+      background: var(--bg-soft);
+      border: 1px solid var(--border-soft);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .hero-visual svg { width: 65%; height: 65%; }
+
+    /* ── BTN ── */
+    .btn {
+      display: inline-block; padding: 12px 32px;
+      font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit; border: none; transition: all .2s;
+    }
+    .btn-dark { background: var(--text); color: var(--bg); }
+    .btn-dark:hover { opacity: .75; }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--text); color: var(--bg); }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { opacity: .85; }
+
+    /* ── PRODUCTS ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      border-top: 1px solid var(--border-soft);
+      border-left: 1px solid var(--border-soft);
+    }
+    .product-card {
+      padding: 24px;
+      border-right: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+      display: flex; flex-direction: column;
+    }
+    .product-img {
+      width: 100%; aspect-ratio: 1;
+      background: var(--bg-soft);
+      border: 1px solid var(--border-soft);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px; overflow: hidden;
+    }
+    .product-img svg { width: 70%; height: 70%; }
+    .product-name { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+    .product-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; flex: 1; }
+    .product-price { font-size: 16px; font-weight: 500; margin-bottom: 14px; }
+    .add-btn {
+      width: 100%; padding: 10px;
+      background: var(--text); color: var(--bg);
+      border: none; font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit; transition: opacity .2s;
+    }
+    .add-btn:hover { opacity: .75; }
+    .add-btn.added { background: var(--accent); }
+
+    /* ── SLIDESHOW / GALLERY ── */
+    .slideshow-wrap { position: relative; }
+    .slideshow {
+      border: 1px solid var(--border-soft);
+      aspect-ratio: 16/7;
+      background: var(--bg-soft);
+      position: relative; overflow: hidden;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px;
+      opacity: 0; transition: opacity .5s;
+      pointer-events: none;
+    }
+    .slide.active { opacity: 1; pointer-events: auto; }
+    .slide svg { width: 200px; height: 200px; }
+    .slide-caption {
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .slide-controls {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+    }
+    .slide-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--text); padding: 9px 22px;
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit; transition: all .2s;
+    }
+    .slide-btn:hover { background: var(--text); color: var(--bg); }
+    .slide-counter { font-size: 11px; letter-spacing: .1em; color: var(--text-muted); }
+    .thumbs {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 16px;
+    }
+    .thumb {
+      aspect-ratio: 1; background: var(--bg-soft); border: 2px solid transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color .2s; overflow: hidden;
+    }
+    .thumb svg { width: 70%; height: 70%; }
+    .thumb.active { border-color: var(--accent); }
+    .thumb:hover { border-color: var(--border); }
+
+    /* ── CART SIDEBAR ── */
+    .cart-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 300; display: none;
+    }
+    .cart-overlay.open { display: block; }
+    .cart-sidebar {
+      position: fixed; right: 0; top: 0; bottom: 0;
+      width: 400px; max-width: 95vw;
+      background: var(--bg);
+      border-left: 1px solid var(--border);
+      z-index: 301; display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform .3s;
+    }
+    .cart-sidebar.open { transform: translateX(0); }
+    .cart-header {
+      padding: 24px 28px; border-bottom: 1px solid var(--border-soft);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .cart-header-title { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
+    .cart-close { background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; line-height: 1; }
+    .cart-close:hover { color: var(--text); }
+    .cart-items { flex: 1; overflow-y: auto; padding: 0; }
+    .cart-empty { padding: 48px 28px; text-align: center; color: var(--text-muted); font-size: 13px; }
+    .cart-item {
+      display: grid; grid-template-columns: 60px 1fr auto;
+      gap: 16px; align-items: center;
+      padding: 18px 28px; border-bottom: 1px solid var(--border-soft);
+    }
+    .cart-item-img {
+      width: 60px; height: 60px; background: var(--bg-soft);
+      border: 1px solid var(--border-soft);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cart-item-img svg { width: 70%; height: 70%; }
+    .cart-item-name { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+    .cart-item-price { font-size: 13px; color: var(--text-muted); }
+    .qty-control { display: flex; align-items: center; gap: 0; margin-top: 8px; }
+    .qty-btn {
+      width: 26px; height: 26px; background: var(--bg-soft);
+      border: 1px solid var(--border-soft); color: var(--text);
+      cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+    }
+    .qty-btn:hover { background: var(--text); color: var(--bg); }
+    .qty-val { width: 36px; text-align: center; font-size: 13px; border: 1px solid var(--border-soft); border-left: none; border-right: none; padding: 4px 0; background: transparent; color: var(--text); font-family: inherit; }
+    .remove-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; line-height: 1; }
+    .remove-btn:hover { color: #cc2200; }
+    .cart-footer {
+      padding: 24px 28px; border-top: 1px solid var(--border-soft);
+    }
+    .cart-total-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 20px;
+    }
+    .cart-total-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--text-muted); }
+    .cart-total-val { font-size: 26px; letter-spacing: -.02em; }
+    .checkout-btn {
+      width: 100%; padding: 14px;
+      background: var(--accent); color: #fff; border: none;
+      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit; transition: opacity .2s;
+    }
+    .checkout-btn:hover { opacity: .85; }
+
+    /* ── CALCULATOR ── */
+    .calculator {
+      border: 1px solid var(--border-soft); padding: 32px;
+    }
+    .calc-title {
+      font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 24px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .calc-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--border-soft);
+    }
+    .calc-row label { font-size: 12px; color: var(--text); }
+    .calc-row input[type=number] {
+      width: 64px; text-align: center; padding: 5px 8px;
+      border: 1px solid var(--border-soft); background: transparent;
+      color: var(--text); font-family: inherit; font-size: 13px;
+      outline: none;
+    }
+    .calc-row input[type=number]:focus { border-color: var(--border); }
+    .calc-total-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 20px 0 0;
+    }
+    .calc-total-label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+    .calc-total-val { font-size: 28px; letter-spacing: -.02em; }
+    .add-all-btn {
+      width: 100%; margin-top: 20px; padding: 12px;
+      background: var(--text); color: var(--bg); border: none;
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      cursor: pointer; font-family: inherit; transition: opacity .2s;
+    }
+    .add-all-btn:hover { opacity: .75; }
+
+    /* ── ORDER POPUP ── */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.55); z-index: 400;
+      align-items: center; justify-content: center;
+    }
+    .overlay.show { display: flex; }
+    .modal {
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 48px; max-width: 440px; width: 90%; position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 18px;
+      background: none; border: none; font-size: 22px;
+      color: var(--text-muted); cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal h3 { font-size: 20px; margin-bottom: 10px; }
+    .modal p { font-size: 13px; margin-bottom: 24px; }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid var(--border-soft);
+      border-left: 1px solid var(--border-soft);
+    }
+    .stat-cell {
+      padding: 36px 48px;
+      border-right: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .stat-number { font-size: 3rem; font-weight: 300; letter-spacing: -.04em; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 36px 48px; border-top: 1px solid var(--border-soft);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
+    .footer-text { font-size: 11px; color: var(--text-muted); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--text); color: var(--bg);
+      padding: 12px 28px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+      z-index: 500; transition: transform .3s; pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .hero { grid-template-columns: 1fr; padding: 60px 20px; }
+      .hero-visual { display: none; }
+      .section, .section-sm { padding: 60px 20px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .thumbs { grid-template-columns: repeat(3,1fr); }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ── Welcome Popup ──────────────────────────────────────────────────────
-       Shows on first visit. Closed by the × button or "Explore" CTA.
-       Uses openPopup / closePopup from js/popup.js.
-  ─────────────────────────────────────────────────────────────────────────── -->
-  <div class="popup-overlay visible" id="welcome-popup">
-    <div class="popup">
-      <button class="popup-close" onclick="closePopup('welcome-popup')" aria-label="Close">&times;</button>
-      <span class="tag">Est. 2026</span>
-      <h3>Welcome to Hardware Tools</h3>
-      <p>Premium architectural and industrial hand tools. Engineered for precision. Built to last.</p>
-      <!-- href points to sibling HTML file inside html/ -->
-      <a href="products.html" class="btn btn-dark" onclick="closePopup('welcome-popup')">Explore the Collection</a>
-    </div>
+<!-- ── CART SIDEBAR ── -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <span class="cart-header-title">Your Cart (<span id="cartCount">0</span>)</span>
+    <button class="cart-close" onclick="closeCart()">×</button>
   </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">Your cart is empty.</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-val" id="cartTotal">$0</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Buy Now — Checkout</button>
+  </div>
+</div>
 
-  <!-- ── Navigation ──────────────────────────────────────────────────────── -->
-  <nav>
-    <span class="nav-logo">Hardware Tools</span>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <!-- toggleTheme() is defined in js/theme.js -->
-      <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
-    </ul>
-  </nav>
+<!-- ── ORDER SUCCESS MODAL ── -->
+<div class="overlay" id="orderModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('orderModal')">×</button>
+    <span class="tag">Order Placed</span>
+    <h3>Thank you! 🎉</h3>
+    <p>Your order has been placed. We'll send a confirmation to your email within a few minutes.</p>
+    <button class="btn btn-dark" onclick="closeModal('orderModal')">Continue Shopping</button>
+  </div>
+</div>
 
-  <!-- ── Hero ────────────────────────────────────────────────────────────── -->
-  <section class="hero">
-    <span class="tag">Premium Hand Tools &mdash; Precision Engineering</span>
+<!-- ── TOAST ── -->
+<div class="toast" id="toast">Added to cart</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <span class="nav-logo">Hardware Tools</span>
+  <div class="nav-right">
+    <button class="nav-link" onclick="scrollTo('#products')">Products</button>
+    <button class="nav-link" onclick="scrollTo('#gallery')">Gallery</button>
+    <button class="nav-link" onclick="scrollTo('#calculator')">Order</button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Dark</button>
+    <button class="cart-btn" onclick="openCart()">
+      Cart <span class="cart-count" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="tag">Premium Hand Tools — Precision Engineering</span>
     <h1>Tools Built<br>for Precision.</h1>
-    <p>Engineered for architects, craftsmen, and makers who demand the very best. No compromise. No excess. Just pure function.</p>
-    <a href="products.html" class="btn btn-dark">Shop Collection</a>
-    &nbsp;&nbsp;
-    <a href="gallery.html" class="btn btn-outline">View Gallery</a>
-  </section>
+    <p>Engineered for architects, craftsmen, and makers who demand the very best. No compromise. Just pure function.</p>
+    <button class="btn btn-dark" onclick="scrollTo('#products')" style="margin-right:12px;">Shop Now</button>
+    <button class="btn btn-outline" onclick="scrollTo('#gallery')">View Gallery</button>
+  </div>
+  <div class="hero-visual">
+    <!-- Animated hero: cycles through product SVGs -->
+    <div id="heroDisplay"></div>
+  </div>
+</section>
 
-  <!-- ── Stats strip ─────────────────────────────────────────────────────── -->
-  <div class="stats-row">
-    <div class="stat-cell">
-      <div class="stat-number">16+</div>
-      <div class="stat-label">Years of Craft</div>
+<!-- ── STATS ── -->
+<div class="stats-row">
+  <div class="stat-cell"><div class="stat-number">16+</div><div class="stat-label">Years of Craft</div></div>
+  <div class="stat-cell"><div class="stat-number">340</div><div class="stat-label">Products in Range</div></div>
+  <div class="stat-cell"><div class="stat-number">12k</div><div class="stat-label">Satisfied Customers</div></div>
+</div>
+
+<!-- ── PRODUCTS ── -->
+<section class="section" id="products">
+  <span class="tag">Full Range</span>
+  <h2 style="margin-bottom:40px;">Our Products</h2>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- ── GALLERY / SLIDESHOW ── -->
+<section class="section" id="gallery">
+  <span class="tag">Visual Catalogue</span>
+  <h2 style="margin-bottom:32px;">Gallery</h2>
+  <div class="slideshow-wrap">
+    <div class="slideshow" id="slideshow"></div>
+    <div class="slide-controls">
+      <button class="slide-btn" onclick="changeSlide(-1)">← Prev</button>
+      <span class="slide-counter" id="slideCounter">1 / 6</span>
+      <button class="slide-btn" onclick="changeSlide(1)">Next →</button>
     </div>
-    <div class="stat-cell">
-      <div class="stat-number">340</div>
-      <div class="stat-label">Products in Range</div>
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+</section>
+
+<!-- ── CALCULATOR ── -->
+<section class="section" id="calculator">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start;">
+    <div>
+      <span class="tag">Build Your Order</span>
+      <h2 style="margin-bottom:16px;">Price Calculator</h2>
+      <p>Set quantities to estimate your total, then add everything to your cart at once.</p>
     </div>
-    <div class="stat-cell">
-      <div class="stat-number">12k</div>
-      <div class="stat-label">Satisfied Customers</div>
+    <div class="calculator">
+      <div class="calc-title">Order Estimate</div>
+      <div id="calcRows"></div>
+      <div class="calc-total-row">
+        <span class="calc-total-label">Estimated Total</span>
+        <span class="calc-total-val" id="calcResult">$0</span>
+      </div>
+      <button class="add-all-btn" onclick="addAllFromCalc()">Add All to Cart</button>
     </div>
   </div>
+</section>
 
-  <!-- ── Featured Products ────────────────────────────────────────────────── -->
-  <section class="section section-border">
-    <span class="tag">Featured Products</span>
-    <h2 style="margin-bottom: 48px;">The Essentials</h2>
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="footer-logo">Hardware Tools</span>
+  <span class="footer-text">© 2024 Hardware Tools. All rights reserved.</span>
+</footer>
 
-    <div class="product-grid">
+<script>
+// ─────────────────────────────────────────────
+//  PRODUCT DATA
+// ─────────────────────────────────────────────
+const PRODUCTS = [
+  {
+    id: 1,
+    name: "Dovetail Saw",
+    desc: "Japanese pull-cut, 20 TPI. Razor spine for precise joinery. Replaceable blade.",
+    price: 149,
+    svg: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="44" width="65" height="10" rx="2" fill="currentColor" opacity=".15" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="8" y="46" width="12" height="6" rx="1" fill="currentColor" opacity=".4"/>
+      <path d="M75 44 L92 30 L95 33 L78 54Z" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="1"/>
+      <line x1="20" y1="54" x2="20" y2="68" stroke="currentColor" stroke-width="1" opacity=".3"/>
+      <line x1="28" y1="54" x2="28" y2="68" stroke="currentColor" stroke-width="1" opacity=".3"/>
+      <line x1="36" y1="54" x2="36" y2="68" stroke="currentColor" stroke-width="1" opacity=".3"/>
+      <line x1="44" y1="54" x2="44" y2="68" stroke="currentColor" stroke-width="1" opacity=".3"/>
+      <line x1="52" y1="54" x2="52" y2="68" stroke="currentColor" stroke-width="1" opacity=".3"/>
+      <line x1="60" y1="54" x2="60" y2="68" stroke="currentColor" stroke-width="1" opacity=".3"/>
+    </svg>`
+  },
+  {
+    id: 2,
+    name: "Layout Square",
+    desc: "Precision machined stainless steel, 300mm. Laser-etched markings. Zero drift.",
+    price: 89,
+    svg: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 80 L15 20 L75 20" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+      <path d="M15 20 L75 80" stroke="currentColor" stroke-width="1.5" opacity=".4"/>
+      <line x1="15" y1="30" x2="22" y2="30" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="15" y1="40" x2="22" y2="40" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="15" y1="50" x2="22" y2="50" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="15" y1="60" x2="22" y2="60" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="15" y1="70" x2="22" y2="70" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="25" y1="20" x2="25" y2="27" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="35" y1="20" x2="35" y2="27" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="45" y1="20" x2="45" y2="27" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="55" y1="20" x2="55" y2="27" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <line x1="65" y1="20" x2="65" y2="27" stroke="currentColor" stroke-width="1" opacity=".5"/>
+    </svg>`
+  },
+  {
+    id: 3,
+    name: "Joiner's Mallet",
+    desc: "Solid European beech, brass-ringed handle. Weighted for perfect balance.",
+    price: 124,
+    svg: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="20" width="40" height="30" rx="2" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="32" y="22" width="36" height="26" rx="1" stroke="currentColor" stroke-width=".5" opacity=".3"/>
+      <rect x="46" y="50" width="8" height="32" rx="1" fill="currentColor" opacity=".15" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="44" y="72" width="12" height="3" rx="1" fill="currentColor" opacity=".5"/>
+      <rect x="44" y="78" width="12" height="3" rx="1" fill="currentColor" opacity=".5"/>
+    </svg>`
+  },
+  {
+    id: 4,
+    name: "Marking Gauge",
+    desc: "Wheel-type cutter, rosewood fence. Micro-adjust thumbscrew.",
+    price: 72,
+    svg: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="44" width="60" height="10" rx="2" fill="currentColor" opacity=".15" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="18" y="35" width="18" height="28" rx="2" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="27" cy="49" r="6" stroke="currentColor" stroke-width="2" fill="none" opacity=".6"/>
+      <circle cx="27" cy="49" r="2" fill="currentColor" opacity=".4"/>
+      <line x1="72" y1="54" x2="72" y2="62" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    </svg>`
+  },
+  {
+    id: 5,
+    name: "Driver Set",
+    desc: "8-piece set. Hardened S2 steel tips. Ergonomic tri-lobe handles. Lifetime warranty.",
+    price: 210,
+    svg: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="42" y="18" width="16" height="32" rx="6" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="47" y="50" width="6" height="30" rx="1" fill="currentColor" opacity=".15" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="47" y1="78" x2="53" y2="78" stroke="currentColor" stroke-width="2" opacity=".6"/>
+      <circle cx="50" cy="28" r="4" stroke="currentColor" stroke-width="1" fill="none" opacity=".3"/>
+      <circle cx="50" cy="38" r="4" stroke="currentColor" stroke-width="1" fill="none" opacity=".3"/>
+    </svg>`
+  },
+  {
+    id: 6,
+    name: "Chisel Set",
+    desc: "Set of 4 (6–25mm). High-carbon A2 steel, oiled ash handles. Honed to 25°.",
+    price: 195,
+    svg: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(-10,0)">
+        <rect x="40" y="15" width="8" height="28" rx="3" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M40 43 L48 43 L46 58 L42 58Z" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="1"/>
+        <line x1="42" y1="58" x2="46" y2="62" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+      </g>
+      <g transform="translate(2,0)">
+        <rect x="46" y="15" width="8" height="28" rx="3" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M46 43 L54 43 L52 60 L48 60Z" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="1"/>
+        <line x1="48" y1="60" x2="52" y2="65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+      </g>
+      <g transform="translate(14,0)">
+        <rect x="46" y="15" width="10" height="28" rx="3" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M46 43 L56 43 L53 62 L49 62Z" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="1"/>
+        <line x1="49" y1="62" x2="53" y2="68" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+      </g>
+    </svg>`
+  }
+];
 
-      <div class="product-card">
-        <!-- Placeholder SVG; swap src for a real photo when available -->
-        <div class="product-img">
-          <img src="../images/product-dovetail-saw.svg" alt="Dovetail Saw">
-        </div>
-        <div class="product-name">Dovetail Saw</div>
-        <div class="product-desc">Japanese pull-cut, 20 TPI razor spine</div>
-        <div class="product-price">$149</div>
-      </div>
+// ─────────────────────────────────────────────
+//  CART STATE
+// ─────────────────────────────────────────────
+let cart = {};   // { productId: quantity }
 
-      <div class="product-card">
-        <div class="product-img">
-          <img src="../images/product-layout-square.svg" alt="Layout Square">
-        </div>
-        <div class="product-name">Layout Square</div>
-        <div class="product-desc">Precision machined stainless, 300mm</div>
-        <div class="product-price">$89</div>
-      </div>
+function getCartItems() {
+  return Object.entries(cart)
+    .filter(([,qty]) => qty > 0)
+    .map(([id, qty]) => ({ product: PRODUCTS.find(p => p.id === +id), qty }));
+}
 
-      <div class="product-card">
-        <div class="product-img">
-          <img src="../images/product-joiners-mallet.svg" alt="Joiner's Mallet">
-        </div>
-        <div class="product-name">Joiner's Mallet</div>
-        <div class="product-desc">Solid beech, brass-ringed handle</div>
-        <div class="product-price">$124</div>
-      </div>
+function cartTotalCount() {
+  return Object.values(cart).reduce((s, q) => s + q, 0);
+}
 
-      <div class="product-card">
-        <div class="product-img">
-          <img src="../images/product-driver-set.svg" alt="Precision Driver Set">
-        </div>
-        <div class="product-name">Precision Driver Set</div>
-        <div class="product-desc">8-piece, hardened steel tips</div>
-        <div class="product-price">$210</div>
-      </div>
+function cartTotalPrice() {
+  return getCartItems().reduce((s, { product, qty }) => s + product.price * qty, 0);
+}
 
-    </div>
+// ─────────────────────────────────────────────
+//  ADD / REMOVE
+// ─────────────────────────────────────────────
+function addToCart(id, qty = 1) {
+  cart[id] = (cart[id] || 0) + qty;
+  renderCart();
+  showToast('Added to cart');
+  // Flash button
+  const btn = document.querySelector(`.add-btn[data-id="${id}"]`);
+  if (btn) { btn.classList.add('added'); setTimeout(() => btn.classList.remove('added'), 900); }
+}
 
-    <div style="margin-top: 40px;">
-      <a href="products.html" class="btn btn-outline">View All Products</a>
-    </div>
-  </section>
+function updateQty(id, delta) {
+  cart[id] = Math.max(0, (cart[id] || 0) + delta);
+  if (cart[id] === 0) delete cart[id];
+  renderCart();
+}
 
-  <!-- ── About blurb ──────────────────────────────────────────────────────── -->
-  <section class="section section-border">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+function removeFromCart(id) {
+  delete cart[id];
+  renderCart();
+}
+
+// ─────────────────────────────────────────────
+//  RENDER CART
+// ─────────────────────────────────────────────
+function renderCart() {
+  const items = getCartItems();
+  const count = cartTotalCount();
+  const total = cartTotalPrice();
+
+  // badge
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = count;
+  badge.classList.toggle('show', count > 0);
+
+  // sidebar count
+  document.getElementById('cartCount').textContent = count;
+
+  // total
+  document.getElementById('cartTotal').textContent = '$' + total.toLocaleString();
+
+  // items
+  const container = document.getElementById('cartItems');
+  const empty = document.getElementById('cartEmpty');
+
+  if (items.length === 0) {
+    empty.style.display = 'block';
+    // remove item rows
+    container.querySelectorAll('.cart-item').forEach(el => el.remove());
+    return;
+  }
+  empty.style.display = 'none';
+
+  // rebuild
+  container.querySelectorAll('.cart-item').forEach(el => el.remove());
+  items.forEach(({ product, qty }) => {
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <div class="cart-item-img" style="color:var(--text)">${product.svg}</div>
       <div>
-        <span class="tag">Our Philosophy</span>
-        <h2 style="margin-bottom: 24px;">Made for the<br>Long Run.</h2>
-        <p style="margin-bottom: 16px;">We believe a great tool should outlast you. Every item in our range is selected for durability, balance, and the quiet satisfaction of something made exactly right.</p>
-        <p>No trends. No gimmicks. Only what works.</p>
+        <div class="cart-item-name">${product.name}</div>
+        <div class="cart-item-price">$${product.price} each</div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="updateQty(${product.id}, -1)">−</button>
+          <input class="qty-val" type="number" value="${qty}" min="0"
+            onchange="setQty(${product.id}, this.value)">
+          <button class="qty-btn" onclick="updateQty(${product.id}, 1)">+</button>
+        </div>
       </div>
-      <div style="border: 1px solid var(--border-soft); padding: 48px; text-align: center;">
-        <div style="font-size: 64px; margin-bottom: 16px;">⚙️</div>
-        <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);">Engineered for precision</div>
-      </div>
-    </div>
-  </section>
+      <button class="remove-btn" onclick="removeFromCart(${product.id})">×</button>
+    `;
+    container.appendChild(div);
+  });
+}
 
-  <!-- ── CTA strip ───────────────────────────────────────────────────────── -->
-  <section class="section-sm section-border text-center">
-    <span class="tag">Ready to get started?</span>
-    <h2 style="margin-bottom: 24px;">Build Something Lasting.</h2>
-    <a href="contact.html" class="btn btn-dark">Get in Touch</a>
-  </section>
+function setQty(id, val) {
+  const n = parseInt(val);
+  if (isNaN(n) || n < 0) return;
+  if (n === 0) { delete cart[id]; } else { cart[id] = n; }
+  renderCart();
+}
 
-  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
-  <footer>
-    <span class="footer-logo">Hardware Tools</span>
-    <span class="footer-text">&copy; 2024 Hardware Tools. All rights reserved.</span>
-  </footer>
+// ─────────────────────────────────────────────
+//  OPEN/CLOSE CART
+// ─────────────────────────────────────────────
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartSidebar').classList.add('open');
+}
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartSidebar').classList.remove('open');
+}
 
-  <!-- ── Scripts ─────────────────────────────────────────────────────────────
-       Load order matters:
-         1. popup.js  — defines openPopup / closePopup (used by theme toggle too)
-         2. theme.js  — applies stored theme and defines toggleTheme()
-       No page-specific JS needed on the home page.
-  ─────────────────────────────────────────────────────────────────────────── -->
-  <script src="../js/popup.js"></script>
-  <script src="../js/theme.js"></script>
+// ─────────────────────────────────────────────
+//  CHECKOUT
+// ─────────────────────────────────────────────
+function checkout() {
+  if (cartTotalCount() === 0) { showToast('Your cart is empty'); return; }
+  closeCart();
+  cart = {};
+  renderCart();
+  document.getElementById('orderModal').classList.add('show');
+}
 
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ─────────────────────────────────────────────
+//  TOAST
+// ─────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ─────────────────────────────────────────────
+//  PRODUCT GRID
+// ─────────────────────────────────────────────
+function buildProductGrid() {
+  const grid = document.getElementById('productGrid');
+  PRODUCTS.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-img" style="color:var(--text)">${p.svg}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-desc">${p.desc}</div>
+      <div class="product-price">$${p.price}</div>
+      <button class="add-btn" data-id="${p.id}" onclick="addToCart(${p.id})">Add to Cart</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ─────────────────────────────────────────────
+//  SLIDESHOW  (JS Feature #2)
+// ─────────────────────────────────────────────
+let currentSlide = 0;
+let autoTimer = null;
+
+function buildGallery() {
+  const ss = document.getElementById('slideshow');
+  const tb = document.getElementById('thumbs');
+
+  PRODUCTS.forEach((p, i) => {
+    // slide
+    const slide = document.createElement('div');
+    slide.className = 'slide' + (i === 0 ? ' active' : '');
+    slide.style.color = 'var(--text)';
+    slide.innerHTML = `
+      ${p.svg}
+      <div class="slide-caption">${p.name} — $${p.price}</div>
+    `;
+    ss.appendChild(slide);
+
+    // thumb
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb' + (i === 0 ? ' active' : '');
+    thumb.style.color = 'var(--text)';
+    thumb.innerHTML = p.svg;
+    thumb.onclick = () => goToSlide(i);
+    tb.appendChild(thumb);
+  });
+}
+
+function goToSlide(n) {
+  const slides = document.querySelectorAll('.slide');
+  const thumbs = document.querySelectorAll('.thumb');
+  slides[currentSlide].classList.remove('active');
+  thumbs[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  thumbs[currentSlide].classList.add('active');
+  document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + slides.length;
+}
+
+function changeSlide(dir) { goToSlide(currentSlide + dir); }
+
+// ─────────────────────────────────────────────
+//  HERO CYCLE
+// ─────────────────────────────────────────────
+function buildHero() {
+  const display = document.getElementById('heroDisplay');
+  display.style.cssText = 'width:65%; height:65%; color:var(--text); transition:opacity .6s;';
+  let heroIdx = 0;
+  display.innerHTML = PRODUCTS[0].svg;
+  setInterval(() => {
+    display.style.opacity = '0';
+    setTimeout(() => {
+      heroIdx = (heroIdx + 1) % PRODUCTS.length;
+      display.innerHTML = PRODUCTS[heroIdx].svg;
+      display.style.opacity = '1';
+    }, 600);
+  }, 2500);
+}
+
+// ─────────────────────────────────────────────
+//  CALCULATOR  (JS Feature #3)
+// ─────────────────────────────────────────────
+function buildCalc() {
+  const container = document.getElementById('calcRows');
+  PRODUCTS.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'calc-row';
+    row.innerHTML = `
+      <label>${p.name} — $${p.price}</label>
+      <input type="number" id="cq${p.id}" value="0" min="0" max="99" oninput="calcTotal()">
+    `;
+    container.appendChild(row);
+  });
+}
+
+function calcTotal() {
+  let total = 0;
+  PRODUCTS.forEach(p => {
+    const val = parseInt(document.getElementById('cq' + p.id)?.value) || 0;
+    total += val * p.price;
+  });
+  document.getElementById('calcResult').textContent = '$' + total.toLocaleString();
+}
+
+function addAllFromCalc() {
+  let added = 0;
+  PRODUCTS.forEach(p => {
+    const val = parseInt(document.getElementById('cq' + p.id)?.value) || 0;
+    if (val > 0) { cart[p.id] = (cart[p.id] || 0) + val; added += val; }
+  });
+  if (added === 0) { showToast('Enter quantities first'); return; }
+  renderCart();
+  showToast(added + ' item(s) added to cart');
+  openCart();
+}
+
+// ─────────────────────────────────────────────
+//  THEME (JS Feature #1 — buttons & events)
+// ─────────────────────────────────────────────
+function toggleTheme() {
+  const isDark = document.body.classList.toggle('dark');
+  document.getElementById('themeBtn').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// ─────────────────────────────────────────────
+//  SMOOTH SCROLL
+// ─────────────────────────────────────────────
+function scrollTo(selector) {
+  document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark');
+    document.getElementById('themeBtn').textContent = 'Light';
+  }
+  buildProductGrid();
+  buildGallery();
+  buildHero();
+  buildCalc();
+  renderCart();
+});
+</script>
 </body>
 </html>
