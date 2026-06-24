@@ -12,11 +12,11 @@
   <nav>
     <span class="nav-logo">Hardware Tools</span>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="gallery.html" class="active">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="products.html">Products</a></li>
+      <li><a class="nav-link active" href="gallery.html">Gallery</a></li>
+      <li><a class="nav-link" href="contact.html">Contact</a></li>
+      <li><button id="themeBtn" onclick="toggleTheme()">Dark</button></li>
     </ul>
   </nav>
 
@@ -74,7 +74,7 @@
     <!-- Prev / Next controls -->
     <div class="slide-controls">
       <button class="slide-btn" onclick="changeSlide(-1)">← Previous</button>
-      <span class="slide-counter" id="slide-counter">1 / 6</span>
+      <span class="slide-counter" id="slideCounter">1 / 6</span>
       <button class="slide-btn" onclick="changeSlide(1)">Next →</button>
     </div>
 
@@ -84,7 +84,7 @@
     </div>
 
     <!-- Thumbnail strip — goToSlide(n) jumps to the matching slide -->
-    <div class="gallery-thumbs" style="margin-top: 32px;">
+    <div id="thumbs" class="gallery-thumbs" style="margin-top: 32px;">
       <div class="thumb active" onclick="goToSlide(0)">
         <img src="../images/product-dovetail-saw.svg"   alt="Dovetail Saw"        style="width:100%; height:100%; object-fit:cover;">
       </div>
@@ -159,6 +159,7 @@
   ─────────────────────────────────────────────────────────────────────────── -->
   <script src="../js/popup.js"></script>
   <script src="../js/theme.js"></script>
+  <script src="../js/main.js"></script>
   <script src="../js/gallery.js"></script>
 
 </body>
