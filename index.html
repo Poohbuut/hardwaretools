@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Welcome Popup (JS Feature 1) -->
+  <div class="popup-overlay visible" id="welcome-popup">
+    <div class="popup">
+      <button class="popup-close" onclick="closePopup('welcome-popup')" aria-label="Close">&times;</button>
+      <span class="tag">Est. 2026</span>
+      <h3>Welcome to Hardware Tools</h3>
+      <p>Premium architectural and industrial hand tools. Engineered for precision. Built to last.</p>
+      <a href="products.html" class="btn btn-dark" onclick="closePopup('welcome-popup')">Explore the Collection</a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <span class="nav-logo">Hardware Tools</span>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="tag">Premium Hand Tools &mdash; Precision Engineering</span>
+    <h1>Tools Built<br>for Precision.</h1>
+    <p>Engineered for architects, craftsmen, and makers who demand the very best. No compromise. No excess. Just pure function.</p>
+    <a href="products.html" class="btn btn-dark">Shop Collection</a>
+    &nbsp;&nbsp;
+    <a href="gallery.html" class="btn btn-outline">View Gallery</a>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-number">16+</div>
+      <div class="stat-label">Years of Craft</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-number">340</div>
+      <div class="stat-label">Products in Range</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-number">12k</div>
+      <div class="stat-label">Satisfied Customers</div>
+    </div>
+  </div>
+
+  <!-- Featured Products -->
+  <section class="section section-border">
+    <span class="tag">Featured Products</span>
+    <h2 style="margin-bottom: 48px;">The Essentials</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img">🪚</div>
+        <div class="product-name">Dovetail Saw</div>
+        <div class="product-desc">Japanese pull-cut, 20 TPI razor spine</div>
+        <div class="product-price">$149</div>
+      </div>
+      <div class="product-card">
+        <div class="product-img">📐</div>
+        <div class="product-name">Layout Square</div>
+        <div class="product-desc">Precision machined stainless, 300mm</div>
+        <div class="product-price">$89</div>
+      </div>
+      <div class="product-card">
+        <div class="product-img">🔨</div>
+        <div class="product-name">Joiner's Mallet</div>
+        <div class="product-desc">Solid beech, brass-ringed handle</div>
+        <div class="product-price">$124</div>
+      </div>
+      <div class="product-card">
+        <div class="product-img">🪛</div>
+        <div class="product-name">Precision Driver Set</div>
+        <div class="product-desc">8-piece, hardened steel tips</div>
+        <div class="product-price">$210</div>
+      </div>
+    </div>
+    <div style="margin-top: 40px;">
+      <a href="products.html" class="btn btn-outline">View All Products</a>
+    </div>
+  </section>
+
+  <!-- About Blurb -->
+  <section class="section section-border">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+      <div>
+        <span class="tag">Our Philosophy</span>
+        <h2 style="margin-bottom: 24px;">Made for the<br>Long Run.</h2>
+        <p style="margin-bottom: 16px;">We believe a great tool should outlast you. Every item in our range is selected for durability, balance, and the quiet satisfaction of something made exactly right.</p>
+        <p>No trends. No gimmicks. Only what works.</p>
+      </div>
+      <div style="border: 1px solid var(--border-soft); padding: 48px; text-align: center;">
+        <div style="font-size: 64px; margin-bottom: 16px;">⚙️</div>
+        <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);">Engineered for precision</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-sm section-border text-center">
+    <span class="tag">Ready to get started?</span>
+    <h2 style="margin-bottom: 24px;">Build Something Lasting.</h2>
+    <a href="contact.html" class="btn btn-dark">Get in Touch</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span class="footer-logo">Hardware Tools</span>
+    <span class="footer-text">&copy; 2024 Hardware Tools. All rights reserved.</span>
+  </footer>
+
+  <script>
+    function closePopup(id) {
+      document.getElementById(id).classList.remove('visible');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('theme-toggle');
+      btn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    (function() {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('theme-toggle').textContent = 'Light';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Hardware Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Add to Cart Popup -->
+  <div class="popup-overlay" id="cart-popup">
+    <div class="popup">
+      <button class="popup-close" onclick="closePopup('cart-popup')" aria-label="Close">&times;</button>
+      <span class="tag">Added to Cart</span>
+      <h3 id="cart-popup-name">Product Name</h3>
+      <p id="cart-popup-desc">Product has been added to your cart.</p>
+      <div style="display: flex; gap: 12px; margin-top: 8px;">
+        <button class="btn btn-dark" onclick="closePopup('cart-popup')">Continue Shopping</button>
+        <a href="contact.html" class="btn btn-outline">Enquire</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <span class="nav-logo">Hardware Tools</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="hero" style="padding-bottom: 60px;">
+    <span class="tag">Full Range</span>
+    <h1>Our Products</h1>
+    <p>Each tool selected for durability, balance, and precision. Made to work harder and last longer than anything else in its class.</p>
+  </section>
+
+  <!-- Product Grid (6 products) -->
+  <section class="section-sm section-border">
+    <div class="product-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+
+      <div class="product-card" onclick="addToCart('Dovetail Saw', '$149')">
+        <div class="product-img">🪚</div>
+        <div class="product-name">Dovetail Saw</div>
+        <div class="product-desc">Japanese pull-cut, 20 TPI. Razor spine for precise joinery cuts. Replaceable blade.</div>
+        <div class="product-price">$149</div>
+        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
+      </div>
+
+      <div class="product-card" onclick="addToCart('Layout Square', '$89')">
+        <div class="product-img">📐</div>
+        <div class="product-name">Layout Square</div>
+        <div class="product-desc">Precision machined stainless steel, 300mm. Laser-etched markings. Zero drift guaranteed.</div>
+        <div class="product-price">$89</div>
+        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
+      </div>
+
+      <div class="product-card" onclick="addToCart('Joiner\'s Mallet', '$124')">
+        <div class="product-img">🔨</div>
+        <div class="product-name">Joiner's Mallet</div>
+        <div class="product-desc">Solid European beech, brass-ringed handle. Weighted for perfect balance and chisel control.</div>
+        <div class="product-price">$124</div>
+        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
+      </div>
+
+      <div class="product-card" onclick="addToCart('Marking Gauge', '$72')">
+        <div class="product-img">📏</div>
+        <div class="product-name">Marking Gauge</div>
+        <div class="product-desc">Wheel-type cutter, rosewood fence. Micro-adjust thumbscrew for repeatable settings.</div>
+        <div class="product-price">$72</div>
+        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
+      </div>
+
+      <div class="product-card" onclick="addToCart('Precision Driver Set', '$210')">
+        <div class="product-img">🪛</div>
+        <div class="product-name">Precision Driver Set</div>
+        <div class="product-desc">8-piece set. Hardened S2 steel tips. Ergonomic tri-lobe handles. Lifetime warranty.</div>
+        <div class="product-price">$210</div>
+        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
+      </div>
+
+      <div class="product-card" onclick="addToCart('Bench Chisel Set', '$195')">
+        <div class="product-img">⚒️</div>
+        <div class="product-name">Bench Chisel Set</div>
+        <div class="product-desc">Set of 4 (6, 12, 19, 25mm). High-carbon A2 steel, oiled ash handles. Honed to 25°.</div>
+        <div class="product-price">$195</div>
+        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Price Calculator (JS Feature 5) -->
+  <section class="section section-border">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;">
+      <div>
+        <span class="tag">Build Your Order</span>
+        <h2 style="margin-bottom: 16px;">Price Calculator</h2>
+        <p>Select quantities to estimate your order total before reaching out.</p>
+      </div>
+      <div class="calculator">
+        <div class="calc-title">Order Estimate</div>
+        <div class="calc-row">
+          <label>Dovetail Saw &mdash; $149</label>
+          <input type="number" id="q1" value="0" min="0" max="99" oninput="calcTotal()">
+        </div>
+        <div class="calc-row">
+          <label>Layout Square &mdash; $89</label>
+          <input type="number" id="q2" value="0" min="0" max="99" oninput="calcTotal()">
+        </div>
+        <div class="calc-row">
+          <label>Joiner's Mallet &mdash; $124</label>
+          <input type="number" id="q3" value="0" min="0" max="99" oninput="calcTotal()">
+        </div>
+        <div class="calc-row">
+          <label>Marking Gauge &mdash; $72</label>
+          <input type="number" id="q4" value="0" min="0" max="99" oninput="calcTotal()">
+        </div>
+        <div class="calc-row">
+          <label>Driver Set &mdash; $210</label>
+          <input type="number" id="q5" value="0" min="0" max="99" oninput="calcTotal()">
+        </div>
+        <div class="calc-row">
+          <label>Chisel Set &mdash; $195</label>
+          <input type="number" id="q6" value="0" min="0" max="99" oninput="calcTotal()">
+        </div>
+        <div class="calc-total">
+          <span class="calc-total-label">Estimated Total</span>
+          <span class="calc-total-value" id="calc-result">$0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span class="footer-logo">Hardware Tools</span>
+    <span class="footer-text">&copy; 2024 Hardware Tools. All rights reserved.</span>
+  </footer>
+
+  <script>
+    const prices = [149, 89, 124, 72, 210, 195];
+
+    function calcTotal() {
+      let total = 0;
+      for (let i = 1; i <= 6; i++) {
+        const q = parseInt(document.getElementById('q' + i).value) || 0;
+        total += Math.max(0, q) * prices[i - 1];
+      }
+      document.getElementById('calc-result').textContent = '$' + total.toLocaleString();
+    }
+
+    function addToCart(name, price) {
+      document.getElementById('cart-popup-name').textContent = name + ' — ' + price;
+      document.getElementById('cart-popup-desc').textContent = name + ' has been added to your quote. Use the price calculator below or contact us to place a full order.';
+      document.getElementById('cart-popup').classList.add('visible');
+    }
+
+    function closePopup(id) {
+      document.getElementById(id).classList.remove('visible');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('theme-toggle');
+      btn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    (function() {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('theme-toggle').textContent = 'Light';
+      }
+    })();
+  </script>
+</body>
+</html>

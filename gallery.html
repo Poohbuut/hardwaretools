@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Hardware Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <span class="nav-logo">Hardware Tools</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <section class="hero" style="padding-bottom: 60px;">
+    <span class="tag">Visual Catalogue</span>
+    <h1>Gallery</h1>
+    <p>A close look at the tools in our collection. Details, materials, and craftsmanship that speak for themselves.</p>
+  </section>
+
+  <!-- Slideshow (JS Feature 3) -->
+  <section class="section-sm section-border">
+    <span class="tag">Slideshow</span>
+
+    <div class="slideshow" id="slideshow">
+      <div class="slide active">
+        <div class="slide-icon">🪚</div>
+        <div class="slide-caption">Dovetail Saw — Japanese pull-cut, 20 TPI</div>
+      </div>
+      <div class="slide">
+        <div class="slide-icon">📐</div>
+        <div class="slide-caption">Layout Square — Precision machined stainless steel</div>
+      </div>
+      <div class="slide">
+        <div class="slide-icon">🔨</div>
+        <div class="slide-caption">Joiner's Mallet — Solid European beech</div>
+      </div>
+      <div class="slide">
+        <div class="slide-icon">📏</div>
+        <div class="slide-caption">Marking Gauge — Wheel cutter, rosewood fence</div>
+      </div>
+      <div class="slide">
+        <div class="slide-icon">🪛</div>
+        <div class="slide-caption">Precision Driver Set — 8-piece, hardened S2 steel</div>
+      </div>
+      <div class="slide">
+        <div class="slide-icon">⚒️</div>
+        <div class="slide-caption">Bench Chisel Set — A2 steel, honed to 25°</div>
+      </div>
+    </div>
+
+    <div class="slide-controls">
+      <button class="slide-btn" onclick="changeSlide(-1)">← Previous</button>
+      <span class="slide-counter" id="slide-counter">1 / 6</span>
+      <button class="slide-btn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <div style="margin-top: 8px; text-align: right;">
+      <button class="slide-btn" id="auto-btn" onclick="toggleAuto()">Auto-play: Off</button>
+    </div>
+
+    <!-- Thumbnail strip -->
+    <div class="gallery-thumbs" style="margin-top: 32px;">
+      <div class="thumb active" onclick="goToSlide(0)">🪚</div>
+      <div class="thumb" onclick="goToSlide(1)">📐</div>
+      <div class="thumb" onclick="goToSlide(2)">🔨</div>
+      <div class="thumb" onclick="goToSlide(3)">📏</div>
+      <div class="thumb" onclick="goToSlide(4)">🪛</div>
+      <div class="thumb" onclick="goToSlide(5)">⚒️</div>
+    </div>
+  </section>
+
+  <!-- Grid Gallery -->
+  <section class="section section-border">
+    <span class="tag">Full Collection</span>
+    <h2 style="margin-bottom: 40px;">Every Detail Counts</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+      <div style="aspect-ratio:1; background: var(--bg-soft); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-size: 48px; cursor: pointer;" onclick="goToSlide(0); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">🪚</div>
+      <div style="aspect-ratio:1; background: var(--bg-soft); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-size: 48px; cursor: pointer;" onclick="goToSlide(1); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">📐</div>
+      <div style="aspect-ratio:1; background: var(--bg-soft); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-size: 48px; cursor: pointer;" onclick="goToSlide(2); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">🔨</div>
+      <div style="aspect-ratio:1; background: var(--bg-soft); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-size: 48px; cursor: pointer;" onclick="goToSlide(3); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">📏</div>
+      <div style="aspect-ratio:1; background: var(--bg-soft); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-size: 48px; cursor: pointer;" onclick="goToSlide(4); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">🪛</div>
+      <div style="aspect-ratio:1; background: var(--bg-soft); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-size: 48px; cursor: pointer;" onclick="goToSlide(5); document.getElementById('slideshow').scrollIntoView({behavior:'smooth'})">⚒️</div>
+    </div>
+    <p style="margin-top: 16px; font-size: 11px; color: var(--text-muted);">Click any item to view it in the slideshow above.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span class="footer-logo">Hardware Tools</span>
+    <span class="footer-text">&copy; 2024 Hardware Tools. All rights reserved.</span>
+  </footer>
+
+  <script>
+    let current = 0;
+    let autoTimer = null;
+    const slides = document.querySelectorAll('.slide');
+    const thumbs = document.querySelectorAll('.thumb');
+    const total = slides.length;
+
+    function showSlide(n) {
+      slides[current].classList.remove('active');
+      thumbs[current].classList.remove('active');
+      current = (n + total) % total;
+      slides[current].classList.add('active');
+      thumbs[current].classList.add('active');
+      document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + total;
+    }
+
+    function changeSlide(dir) { showSlide(current + dir); }
+
+    function goToSlide(n) { showSlide(n); }
+
+    function toggleAuto() {
+      const btn = document.getElementById('auto-btn');
+      if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+        btn.textContent = 'Auto-play: Off';
+      } else {
+        autoTimer = setInterval(() => changeSlide(1), 2500);
+        btn.textContent = 'Auto-play: On';
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('theme-toggle');
+      btn.textContent = document.body.classList.contains('dark') ? 'Light' : 'Dark';
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    (function() {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('theme-toggle').textContent = 'Light';
+      }
+    })();
+  </script>
+</body>
+</html>
