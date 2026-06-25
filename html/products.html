@@ -44,17 +44,15 @@
   <!-- ── Navigation ──────────────────────────────────────────────────────── -->
   <nav>
     <a href="index.html" class="nav-logo">Hardware Tools</a>
-    <ul class="nav-links">
-      <li><a href="products.html" class="active">Products</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
-      <li>
-        <button class="cart-btn" onclick="openCart()">
-          Cart <span class="cart-count" id="cartBadge">0</span>
-        </button>
-      </li>
-    </ul>
+    <div class="nav-right">
+      <a class="nav-link active" href="products.html">Products</a>
+      <a class="nav-link" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Dark</button>
+      <button class="cart-btn" onclick="openCart()">
+        Cart <span class="cart-count" id="cartBadge">0</span>
+      </button>
+    </div>
   </nav>
 
   <!-- ── Page header ─────────────────────────────────────────────────────── -->
