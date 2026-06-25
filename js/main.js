@@ -208,7 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   buildProductGrid();
-  buildGallery();
+  if (typeof buildGallery === 'function') {
+    buildGallery();
+  }
   buildHero();
   buildCalc();
   // renderCart() is called by cart.js after it loads — no duplicate call needed here
