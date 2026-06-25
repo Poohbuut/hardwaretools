@@ -1,13 +1,30 @@
 // ─────────────────────────────────────────────
 //  cart.js — Add to cart, remove, qty, checkout
+//  Cart persists across pages via localStorage.
 // ─────────────────────────────────────────────
 
-let cart = {}; // { productId: quantity }
+// Load cart from localStorage on startup
+let cart = loadCart();
+
+function loadCart() {
+  try {
+    return JSON.parse(localStorage.getItem('hw_cart') || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function saveCart() {
+  try {
+    localStorage.setItem('hw_cart', JSON.stringify(cart));
+  } catch {}
+}
 
 function getCartItems() {
   return Object.entries(cart)
     .filter(([, qty]) => qty > 0)
-    .map(([id, qty]) => ({ product: PRODUCTS.find(p => p.id === +id), qty }));
+    .map(([id, qty]) => ({ product: PRODUCTS.find(p => p.id === +id), qty }))
+    .filter(item => item.product); // guard against stale IDs
 }
 
 function cartTotalCount() {
@@ -20,6 +37,7 @@ function cartTotalPrice() {
 
 function addToCart(id, qty = 1) {
   cart[id] = (cart[id] || 0) + qty;
+  saveCart();
   renderCart();
   showToast('Added to cart');
   const btn = document.querySelector(`.add-btn[data-id="${id}"]`);
@@ -36,6 +54,7 @@ function addToCart(id, qty = 1) {
 function updateQty(id, delta) {
   cart[id] = Math.max(0, (cart[id] || 0) + delta);
   if (cart[id] === 0) delete cart[id];
+  saveCart();
   renderCart();
 }
 
@@ -43,11 +62,13 @@ function setQty(id, val) {
   const n = parseInt(val);
   if (isNaN(n) || n < 0) return;
   if (n === 0) { delete cart[id]; } else { cart[id] = n; }
+  saveCart();
   renderCart();
 }
 
 function removeFromCart(id) {
   delete cart[id];
+  saveCart();
   renderCart();
 }
 
@@ -58,22 +79,29 @@ function renderCart() {
 
   // nav badge
   const badge = document.getElementById('cartBadge');
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'flex' : 'none';
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+    badge.classList.toggle('show', count > 0);
+  }
 
-  // sidebar count + total
-  document.getElementById('cartCount').textContent = count;
-  document.getElementById('cartTotal').textContent = '$' + total.toLocaleString();
+  const cartCountEl = document.getElementById('cartCount');
+  if (cartCountEl) cartCountEl.textContent = count;
+
+  const cartTotalEl = document.getElementById('cartTotal');
+  if (cartTotalEl) cartTotalEl.textContent = '$' + total.toLocaleString();
 
   const container = document.getElementById('cartItems');
   const empty = document.getElementById('cartEmpty');
+  if (!container) return;
+
   container.querySelectorAll('.cart-item').forEach(el => el.remove());
 
   if (items.length === 0) {
-    empty.style.display = 'block';
+    if (empty) empty.style.display = 'block';
     return;
   }
-  empty.style.display = 'none';
+  if (empty) empty.style.display = 'none';
 
   items.forEach(({ product, qty }) => {
     const div = document.createElement('div');
@@ -97,31 +125,33 @@ function renderCart() {
 }
 
 function openCart() {
-  document.getElementById('cartOverlay').classList.add('open');
-  document.getElementById('cartSidebar').classList.add('open');
+  document.getElementById('cartOverlay')?.classList.add('open');
+  document.getElementById('cartSidebar')?.classList.add('open');
 }
 
 function closeCart() {
-  document.getElementById('cartOverlay').classList.remove('open');
-  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('cartOverlay')?.classList.remove('open');
+  document.getElementById('cartSidebar')?.classList.remove('open');
 }
 
 function checkout() {
   if (cartTotalCount() === 0) { showToast('Your cart is empty'); return; }
   closeCart();
   cart = {};
+  saveCart();
   renderCart();
-  document.getElementById('orderModal').classList.add('show');
+  document.getElementById('orderModal')?.classList.add('show');
 }
 
 function closeModal(id) {
-  document.getElementById(id).classList.remove('show');
+  document.getElementById(id)?.classList.remove('show');
 }
 
 // Toast notification
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
+  if (!t) return;
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);

@@ -1,13 +1,46 @@
-// gallery.js — slideshow, thumbnails, auto-play
+// ─────────────────────────────────────────────
+//  gallery.js — slideshow, thumbnails, auto-play
+// ─────────────────────────────────────────────
+
 let currentSlide = 0;
 let autoTimer    = null;
 
+// buildGallery: works in two modes
+//   1. index.html — dynamically creates slides from PRODUCTS data
+//   2. gallery.html — HTML has static slides; just wire up counter + thumbs
 function buildGallery() {
   const ss = document.getElementById('slideshow');
   const tb = document.getElementById('thumbs');
-  if (!ss || !tb) return;
+  if (!ss) return;
 
-  // gallery.html uses static HTML slides/thumbs — just wire up the counter
+  const hasStaticSlides = ss.querySelectorAll('.slide').length > 0;
+
+  if (!hasStaticSlides && typeof PRODUCTS !== 'undefined') {
+    // Dynamic mode (index.html)
+    PRODUCTS.forEach((p, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'slide' + (i === 0 ? ' active' : '');
+      slide.style.color = 'var(--text)';
+      slide.innerHTML = `${p.svg}<div class="slide-caption">${p.name} — $${p.price}</div>`;
+      ss.appendChild(slide);
+
+      if (tb) {
+        const thumb = document.createElement('div');
+        thumb.className = 'thumb' + (i === 0 ? ' active' : '');
+        thumb.style.color = 'var(--text)';
+        thumb.innerHTML = p.svg;
+        thumb.onclick = () => goToSlide(i);
+        tb.appendChild(thumb);
+      }
+    });
+  }
+
+  // Both modes: ensure first slide is active, wire counter
+  const slides = ss.querySelectorAll('.slide');
+  if (slides.length > 0) {
+    currentSlide = 0;
+    slides[0].classList.add('active');
+  }
   updateCounter();
 }
 
@@ -48,7 +81,7 @@ function toggleAuto() {
   }
 }
 
-// Hero animation (used by pages that have #heroDisplay)
+// Hero animation — cycles product SVGs (index.html)
 function buildHero() {
   const display = document.getElementById('heroDisplay');
   if (!display || typeof PRODUCTS === 'undefined') return;
@@ -68,3 +101,5 @@ function buildHero() {
 window.goToSlide   = goToSlide;
 window.changeSlide = changeSlide;
 window.toggleAuto  = toggleAuto;
+window.buildHero   = buildHero;
+window.buildGallery = buildGallery;

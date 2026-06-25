@@ -395,9 +395,9 @@
 <nav>
   <span class="nav-logo">Hardware Tools</span>
   <div class="nav-right">
-    <button class="nav-link" onclick="scrollToSection('#products')">Products</button>
-    <button class="nav-link" onclick="scrollToSection('#gallery')">Gallery</button>
-    <button class="nav-link" onclick="scrollToSection('#calculator')">Order</button>
+    <a class="nav-link" href="products.html">Products</a>
+    <a class="nav-link" href="gallery.html">Gallery</a>
+    <a class="nav-link" href="products.html">Order</a>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">Dark</button>
     <button class="cart-btn" onclick="openCart()">
       Cart <span class="cart-count" id="cartBadge">0</span>
@@ -411,8 +411,8 @@
     <span class="tag">Premium Hand Tools — Precision Engineering</span>
     <h1>Tools Built<br>for Precision.</h1>
     <p>Engineered for architects, craftsmen, and makers who demand the very best. No compromise. Just pure function.</p>
-    <button class="btn btn-dark" onclick="scrollToSection('#products')" style="margin-right:12px;">Shop Now</button>
-    <button class="btn btn-outline" onclick="scrollToSection('#gallery')">View Gallery</button>
+    <button class="btn btn-dark" onclick="location.href='products.html'" style="margin-right:12px;">Shop Now</button>
+    <button class="btn btn-outline" onclick="location.href='gallery.html'">View Gallery</button>
   </div>
   <div class="hero-visual">
     <!-- Animated hero: cycles through product SVGs -->
@@ -427,46 +427,29 @@
   <div class="stat-cell"><div class="stat-number">12k</div><div class="stat-label">Satisfied Customers</div></div>
 </div>
 
-<!-- ── PRODUCTS ── -->
-<section class="section" id="products">
-  <span class="tag">Full Range</span>
-  <h2 style="margin-bottom:40px;">Our Products</h2>
-  <div class="product-grid" id="productGrid"></div>
-</section>
-
-<!-- ── GALLERY / SLIDESHOW ── -->
-<section class="section" id="gallery">
-  <span class="tag">Visual Catalogue</span>
-  <h2 style="margin-bottom:32px;">Gallery</h2>
-  <div class="slideshow-wrap">
-    <div class="slideshow" id="slideshow"></div>
-    <div class="slide-controls">
-      <button class="slide-btn" onclick="changeSlide(-1)">← Prev</button>
-      <span class="slide-counter" id="slideCounter">1 / 6</span>
-      <button class="slide-btn" onclick="changeSlide(1)">Next →</button>
-    </div>
-    <div class="thumbs" id="thumbs"></div>
-  </div>
-</section>
-
-<!-- ── CALCULATOR ── -->
-<section class="section" id="calculator">
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start;">
+<!-- ── PREVIEWS ── -->
+<section class="section" id="overview">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;">
     <div>
-      <span class="tag">Build Your Order</span>
-      <h2 style="margin-bottom:16px;">Price Calculator</h2>
-      <p>Set quantities to estimate your total, then add everything to your cart at once.</p>
+      <span class="tag">Full Range</span>
+      <h2 style="margin-bottom:12px;">Explore Our Products</h2>
+      <p style="margin-bottom:18px;">Browse the complete collection and use the order calculator on the Products page.</p>
+      <a class="btn btn-dark" href="products.html">View Products</a>
     </div>
-    <div class="calculator">
-      <div class="calc-title">Order Estimate</div>
-      <div id="calcRows"></div>
-      <div class="calc-total-row">
-        <span class="calc-total-label">Estimated Total</span>
-        <span class="calc-total-val" id="calcResult">$0</span>
-      </div>
-      <button class="add-all-btn" onclick="addAllFromCalc()">Add All to Cart</button>
+    <div>
+      <span class="tag">Visual Catalogue</span>
+      <h2 style="margin-bottom:12px;">Gallery Highlights</h2>
+      <p style="margin-bottom:18px;">See close-up photos and details on the dedicated Gallery page.</p>
+      <a class="btn btn-outline" href="gallery.html">Open Gallery</a>
     </div>
   </div>
+</section>
+
+<section class="section-sm">
+  <span class="tag">Order</span>
+  <h2 style="margin-bottom:12px;">Build Your Order</h2>
+  <p style="margin-bottom:18px;">Estimate totals and add items on the Products page, or contact us to place an order.</p>
+  <a class="btn btn-accent" href="products.html">Start an Order</a>
 </section>
 
 <!-- ── FOOTER ── -->

@@ -106,6 +106,7 @@ const PRODUCTS = [
 ];
 
 // ── PRODUCT GRID ──────────────────────────────
+// Used by index.html and products.html
 function buildProductGrid() {
   const grid = document.getElementById('productGrid');
   if (!grid) return;
@@ -123,57 +124,93 @@ function buildProductGrid() {
   });
 }
 
-// ── NAV SCROLL ────────────────────────────────
-function navScrollTo(selector) {
-  const target = document.querySelector(selector);
-  if (!target) return;
-  // offset for sticky nav height
-  const navH = document.querySelector('nav').offsetHeight;
-  const top = target.getBoundingClientRect().top + window.scrollY - navH - 16;
-  window.scrollTo({ top, behavior: 'smooth' });
-  // update active link
-  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-  const activeLink = document.querySelector(`.nav-link[data-target="${selector}"]`);
-  if (activeLink) activeLink.classList.add('active');
+// ── HERO CYCLE ────────────────────────────────
+function buildHero() {
+  const display = document.getElementById('heroDisplay');
+  if (!display) return;
+  display.style.cssText = 'width:65%; height:65%; color:var(--text); transition:opacity .6s;';
+  let heroIdx = 0;
+  display.innerHTML = PRODUCTS[0].svg;
+  setInterval(() => {
+    display.style.opacity = '0';
+    setTimeout(() => {
+      heroIdx = (heroIdx + 1) % PRODUCTS.length;
+      display.innerHTML = PRODUCTS[heroIdx].svg;
+      display.style.opacity = '1';
+    }, 600);
+  }, 2500);
 }
 
-// Highlight nav link on scroll
-function initScrollSpy() {
-  const sections = ['#products', '#gallery', '#calculator'];
-  window.addEventListener('scroll', () => {
-    const navH = document.querySelector('nav').offsetHeight;
-    sections.forEach(sel => {
-      const el = document.querySelector(sel);
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const link = document.querySelector(`.nav-link[data-target="${sel}"]`);
-      if (!link) return;
-      if (rect.top <= navH + 40 && rect.bottom > navH + 40) {
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-      }
-    });
+// ── CALCULATOR ────────────────────────────────
+function buildCalc() {
+  const container = document.getElementById('calcRows');
+  if (!container) return;
+  PRODUCTS.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'calc-row';
+    row.innerHTML = `
+      <label>${p.name} — $${p.price}</label>
+      <input type="number" id="cq${p.id}" value="0" min="0" max="99" oninput="calcTotal()">
+    `;
+    container.appendChild(row);
   });
+}
+
+function calcTotal() {
+  let total = 0;
+  PRODUCTS.forEach(p => {
+    const val = parseInt(document.getElementById('cq' + p.id)?.value) || 0;
+    total += val * p.price;
+  });
+  const el = document.getElementById('calcResult');
+  if (el) el.textContent = '$' + total.toLocaleString();
+}
+
+function addAllFromCalc() {
+  let added = 0;
+  PRODUCTS.forEach(p => {
+    const val = parseInt(document.getElementById('cq' + p.id)?.value) || 0;
+    if (val > 0) {
+      cart[p.id] = (cart[p.id] || 0) + val;
+      added += val;
+    }
+  });
+  if (added === 0) { showToast('Enter quantities first'); return; }
+  saveCart();
+  renderCart();
+  showToast(added + ' item(s) added to cart');
+  openCart();
+}
+
+// ── NAV SCROLL (index only) ───────────────────
+function scrollToSection(selector) {
+  document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ── THEME ─────────────────────────────────────
 function toggleTheme() {
   const isDark = document.body.classList.toggle('dark');
-  document.getElementById('themeBtn').textContent = isDark ? 'Light' : 'Dark';
+  const label = isDark ? 'Light' : 'Dark';
+  ['themeBtn', 'theme-toggle'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = label;
+  });
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
 
 // ── INIT ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  // restore theme
+  // Restore theme
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark');
-    document.getElementById('themeBtn').textContent = 'Light';
+    ['themeBtn', 'theme-toggle'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = 'Light';
+    });
   }
   buildProductGrid();
   buildGallery();
   buildHero();
   buildCalc();
   renderCart();
-  initScrollSpy();
 });
