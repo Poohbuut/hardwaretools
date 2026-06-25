@@ -106,7 +106,6 @@ const PRODUCTS = [
 ];
 
 // ── PRODUCT GRID ──────────────────────────────
-// Used by index.html and products.html
 function buildProductGrid() {
   const grid = document.getElementById('productGrid');
   if (!grid) return;
@@ -127,7 +126,7 @@ function buildProductGrid() {
 // ── HERO CYCLE ────────────────────────────────
 function buildHero() {
   const display = document.getElementById('heroDisplay');
-  if (!display) return;
+  if (!display || typeof PRODUCTS === 'undefined') return;
   display.style.cssText = 'width:65%; height:65%; color:var(--text); transition:opacity .6s;';
   let heroIdx = 0;
   display.innerHTML = PRODUCTS[0].svg;
@@ -182,7 +181,7 @@ function addAllFromCalc() {
   openCart();
 }
 
-// ── NAV SCROLL (index only) ───────────────────
+// ── NAV SCROLL ────────────────────────────────
 function scrollToSection(selector) {
   document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
 }
@@ -212,5 +211,5 @@ document.addEventListener('DOMContentLoaded', () => {
   buildGallery();
   buildHero();
   buildCalc();
-  renderCart();
+  // renderCart() is called by cart.js after it loads — no duplicate call needed here
 });

@@ -8,10 +8,7 @@
 </head>
 <body>
 
-  <!-- ── Success Popup ───────────────────────────────────────────────────────
-       Shown by submitForm() in js/contact.js after all fields pass validation.
-       Closed by the × button or the "Close" CTA via closePopup() in js/popup.js.
-  ─────────────────────────────────────────────────────────────────────────── -->
+  <!-- ── Success Popup ───────────────────────────────────────────────────── -->
   <div class="popup-overlay" id="success-popup">
     <div class="popup">
       <button class="popup-close" onclick="closePopup('success-popup')" aria-label="Close">&times;</button>
@@ -22,15 +19,52 @@
     </div>
   </div>
 
+  <!-- ── Cart Sidebar ────────────────────────────────────────────────────── -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-header-title">Your Cart (<span id="cartCount">0</span>)</span>
+      <button class="cart-close" onclick="closeCart()">×</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">Your cart is empty.</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-val" id="cartTotal">$0</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Buy Now — Checkout</button>
+    </div>
+  </div>
+
+  <!-- ── Order Success Modal ─────────────────────────────────────────────── -->
+  <div class="overlay" id="orderModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('orderModal')">×</button>
+      <span class="tag">Order Placed</span>
+      <h3>Thank you!</h3>
+      <p>Your order has been placed. We'll send a confirmation to your email within a few minutes.</p>
+      <button class="btn btn-dark" onclick="closeModal('orderModal')">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- ── Toast ───────────────────────────────────────────────────────────── -->
+  <div class="toast" id="toast"></div>
+
   <!-- ── Navigation ──────────────────────────────────────────────────────── -->
   <nav>
-    <span class="nav-logo">Hardware Tools</span>
+    <a href="index.html" class="nav-logo">Hardware Tools</a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
       <li><a href="products.html">Products</a></li>
       <li><a href="gallery.html">Gallery</a></li>
       <li><a href="contact.html" class="active">Contact</a></li>
       <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
+      <li>
+        <button class="cart-btn" onclick="openCart()">
+          Cart <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </li>
     </ul>
   </nav>
 
@@ -71,11 +105,7 @@
         </div>
       </div>
 
-      <!-- ── Contact form ─────────────────────────────────────────────────────
-           Submission is handled by submitForm() in js/contact.js.
-           novalidate turns off native browser validation so our custom
-           error messages show instead.
-      ──────────────────────────────────────────────────────────────────────── -->
+      <!-- Contact form -->
       <div>
         <span class="tag">Send a Message</span>
 
@@ -144,11 +174,15 @@
 
   <!-- ── Scripts ─────────────────────────────────────────────────────────────
        Load order:
-         1. popup.js   — openPopup / closePopup (used by success-popup)
-         2. theme.js   — dark/light mode
-         3. contact.js — validate(), submitForm(), live re-validation listeners
+         1. main.js    — PRODUCTS data
+         2. popup.js   — openPopup / closePopup (success-popup)
+         3. cart.js    — cart state, renderCart, openCart, closeCart, checkout
+         4. theme.js   — dark/light mode
+         5. contact.js — validate(), submitForm()
   ─────────────────────────────────────────────────────────────────────────── -->
+  <script src="../js/main.js"></script>
   <script src="../js/popup.js"></script>
+  <script src="../js/cart.js"></script>
   <script src="../js/theme.js"></script>
   <script src="../js/contact.js"></script>
 

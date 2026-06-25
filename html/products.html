@@ -8,32 +8,52 @@
 </head>
 <body>
 
-  <!-- ── Add-to-Cart Popup ───────────────────────────────────────────────────
-       Content (#cart-popup-name and #cart-popup-desc) is injected by
-       addToCart() in js/products.js before the popup opens.
-  ─────────────────────────────────────────────────────────────────────────── -->
-  <div class="popup-overlay" id="cart-popup">
-    <div class="popup">
-      <button class="popup-close" onclick="closePopup('cart-popup')" aria-label="Close">&times;</button>
-      <span class="tag">Added to Cart</span>
-      <h3 id="cart-popup-name">Product Name</h3>
-      <p id="cart-popup-desc">Product has been added to your cart.</p>
-      <div style="display: flex; gap: 12px; margin-top: 8px;">
-        <button class="btn btn-dark" onclick="closePopup('cart-popup')">Continue Shopping</button>
-        <a href="contact.html" class="btn btn-outline">Enquire</a>
+  <!-- ── Cart Sidebar ────────────────────────────────────────────────────── -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-header-title">Your Cart (<span id="cartCount">0</span>)</span>
+      <button class="cart-close" onclick="closeCart()">×</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">Your cart is empty.</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-val" id="cartTotal">$0</span>
       </div>
+      <button class="checkout-btn" onclick="checkout()">Buy Now — Checkout</button>
     </div>
   </div>
 
+  <!-- ── Order Success Modal ─────────────────────────────────────────────── -->
+  <div class="overlay" id="orderModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('orderModal')">×</button>
+      <span class="tag">Order Placed</span>
+      <h3>Thank you!</h3>
+      <p>Your order has been placed. We'll send a confirmation to your email within a few minutes.</p>
+      <button class="btn btn-dark" onclick="closeModal('orderModal')">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- ── Toast ───────────────────────────────────────────────────────────── -->
+  <div class="toast" id="toast">Added to cart</div>
+
   <!-- ── Navigation ──────────────────────────────────────────────────────── -->
   <nav>
-    <span class="nav-logo">Hardware Tools</span>
+    <a href="index.html" class="nav-logo">Hardware Tools</a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
       <li><a href="products.html" class="active">Products</a></li>
       <li><a href="gallery.html">Gallery</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><button id="theme-toggle" onclick="toggleTheme()">Dark</button></li>
+      <li>
+        <button class="cart-btn" onclick="openCart()">
+          Cart <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </li>
     </ul>
   </nav>
 
@@ -45,75 +65,11 @@
   </section>
 
   <!-- ── Product Grid ─────────────────────────────────────────────────────── -->
-  <!-- onclick calls addToCart() defined in js/products.js -->
   <section class="section-sm section-border">
-    <div class="product-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-
-      <div class="product-card" onclick="addToCart('Dovetail Saw', '$149')">
-        <div class="product-img">
-          <img src="../images/product-dovetail-saw.svg" alt="Dovetail Saw">
-        </div>
-        <div class="product-name">Dovetail Saw</div>
-        <div class="product-desc">Japanese pull-cut, 20 TPI. Razor spine for precise joinery cuts. Replaceable blade.</div>
-        <div class="product-price">$149</div>
-        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
-      </div>
-
-      <div class="product-card" onclick="addToCart('Layout Square', '$89')">
-        <div class="product-img">
-          <img src="../images/product-layout-square.svg" alt="Layout Square">
-        </div>
-        <div class="product-name">Layout Square</div>
-        <div class="product-desc">Precision machined stainless steel, 300mm. Laser-etched markings. Zero drift guaranteed.</div>
-        <div class="product-price">$89</div>
-        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
-      </div>
-
-      <div class="product-card" onclick="addToCart('Joiner\'s Mallet', '$124')">
-        <div class="product-img">
-          <img src="../images/product-joiners-mallet.svg" alt="Joiner's Mallet">
-        </div>
-        <div class="product-name">Joiner's Mallet</div>
-        <div class="product-desc">Solid European beech, brass-ringed handle. Weighted for perfect balance and chisel control.</div>
-        <div class="product-price">$124</div>
-        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
-      </div>
-
-      <div class="product-card" onclick="addToCart('Marking Gauge', '$72')">
-        <div class="product-img">
-          <img src="../images/product-marking-gauge.svg" alt="Marking Gauge">
-        </div>
-        <div class="product-name">Marking Gauge</div>
-        <div class="product-desc">Wheel-type cutter, rosewood fence. Micro-adjust thumbscrew for repeatable settings.</div>
-        <div class="product-price">$72</div>
-        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
-      </div>
-
-      <div class="product-card" onclick="addToCart('Precision Driver Set', '$210')">
-        <div class="product-img">
-          <img src="../images/product-driver-set.svg" alt="Precision Driver Set">
-        </div>
-        <div class="product-name">Precision Driver Set</div>
-        <div class="product-desc">8-piece set. Hardened S2 steel tips. Ergonomic tri-lobe handles. Lifetime warranty.</div>
-        <div class="product-price">$210</div>
-        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
-      </div>
-
-      <div class="product-card" onclick="addToCart('Bench Chisel Set', '$195')">
-        <div class="product-img">
-          <img src="../images/product-chisel-set.svg" alt="Bench Chisel Set">
-        </div>
-        <div class="product-name">Bench Chisel Set</div>
-        <div class="product-desc">Set of 4 (6, 12, 19, 25mm). High-carbon A2 steel, oiled ash handles. Honed to 25°.</div>
-        <div class="product-price">$195</div>
-        <button class="btn btn-dark" style="margin-top:16px; width:100%;">Add to Cart</button>
-      </div>
-
-    </div>
+    <div class="product-grid" id="productGrid"></div>
   </section>
 
   <!-- ── Price Calculator ─────────────────────────────────────────────────── -->
-  <!-- Quantities call calcTotal() defined in js/products.js -->
   <section class="section section-border">
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;">
 
@@ -125,36 +81,12 @@
 
       <div class="calculator">
         <div class="calc-title">Order Estimate</div>
-
-        <div class="calc-row">
-          <label>Dovetail Saw &mdash; $149</label>
-          <input type="number" id="q1" value="0" min="0" max="99" oninput="calcTotal()">
-        </div>
-        <div class="calc-row">
-          <label>Layout Square &mdash; $89</label>
-          <input type="number" id="q2" value="0" min="0" max="99" oninput="calcTotal()">
-        </div>
-        <div class="calc-row">
-          <label>Joiner's Mallet &mdash; $124</label>
-          <input type="number" id="q3" value="0" min="0" max="99" oninput="calcTotal()">
-        </div>
-        <div class="calc-row">
-          <label>Marking Gauge &mdash; $72</label>
-          <input type="number" id="q4" value="0" min="0" max="99" oninput="calcTotal()">
-        </div>
-        <div class="calc-row">
-          <label>Driver Set &mdash; $210</label>
-          <input type="number" id="q5" value="0" min="0" max="99" oninput="calcTotal()">
-        </div>
-        <div class="calc-row">
-          <label>Chisel Set &mdash; $195</label>
-          <input type="number" id="q6" value="0" min="0" max="99" oninput="calcTotal()">
-        </div>
-
-        <div class="calc-total">
+        <div id="calcRows"></div>
+        <div class="calc-total-row">
           <span class="calc-total-label">Estimated Total</span>
-          <span class="calc-total-value" id="calc-result">$0</span>
+          <span class="calc-total-val" id="calcResult">$0</span>
         </div>
+        <button class="add-all-btn" onclick="addAllFromCalc()">Add All to Cart</button>
       </div>
 
     </div>
@@ -168,13 +100,13 @@
 
   <!-- ── Scripts ─────────────────────────────────────────────────────────────
        Load order:
-         1. popup.js    — shared modal helpers (openPopup / closePopup)
-         2. theme.js    — dark/light mode
-         3. products.js — calcTotal() and addToCart()
+         1. main.js   — PRODUCTS data + buildProductGrid, buildCalc, toggleTheme
+         2. cart.js   — cart state, renderCart, addToCart(id), checkout
+         3. theme.js  — dark/light mode (standalone pages)
   ─────────────────────────────────────────────────────────────────────────── -->
-  <script src="../js/popup.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/cart.js"></script>
   <script src="../js/theme.js"></script>
-  <script src="../js/products.js"></script>
 
 </body>
 </html>

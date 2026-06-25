@@ -1,5 +1,5 @@
 // products.js — add-to-cart popup + price calculator for products.html
-function addToCart(name, price) {
+function showAddPopup(name, price) {
   const nameEl = document.getElementById('cart-popup-name');
   const descEl = document.getElementById('cart-popup-desc');
   if (nameEl) nameEl.textContent = name;
@@ -20,5 +20,5 @@ function calcTotal() {
   if (el) el.textContent = '$' + total.toLocaleString();
 }
 
-window.addToCart = addToCart;
+window.showAddPopup = showAddPopup;
 window.calcTotal = calcTotal;
